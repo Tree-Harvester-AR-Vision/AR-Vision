@@ -31,7 +31,13 @@ public class Socket : MonoBehaviour {
             specified = true;
             await socket.SendAsync(Encoding.UTF8.GetBytes("R"), WebSocketMessageType.Text, true, CancellationToken.None);
         } else if (specified) {
-            await GetNewTrees();           
+            string type = await Receive();
+            if (type == "Update")
+                await GetNewTrees(); // Doesn't account for trees that need to be deleted
+            else if (type == "Remove") {
+                BBrenderer.ClearTrees(); // Can call this because remove and add trees are done as separate events
+                await RemoveTrees();
+            }
         }
     }
 
@@ -42,6 +48,15 @@ public class Socket : MonoBehaviour {
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
 
         BBrenderer.UpdateTree(inputTree);
+    }
+
+    private async Task RemoveTrees() {
+        ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[2048]);
+        string tree = await Receive();
+
+        InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
+
+        BBrenderer.RemoveTrees(inputTree);
     }
 
     private async Task<string> Receive() {
