@@ -16,6 +16,7 @@ public class Socket : MonoBehaviour {
     Task Connected;
     bool specified;
 
+    public BoundingBoxRenderer BBrenderer;
     private void Start() {
         
         socket = new ClientWebSocket();
@@ -40,7 +41,7 @@ public class Socket : MonoBehaviour {
 
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
 
-        Debug.Log($"Species: {inputTree.Species} Age: {inputTree.Age} Center: {inputTree.boundingBox.Center}");
+        BBrenderer.UpdateTree(inputTree);
     }
 
     private async Task<string> Receive() {

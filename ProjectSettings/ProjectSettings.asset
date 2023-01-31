@@ -663,7 +663,7 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: com.unity.template.ar
-  metroPackageVersion: 
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
@@ -671,7 +671,7 @@ PlayerSettings:
   metroCertificateNotAfter: 00f58ef9294fda01
   metroApplicationDescription: com.unity.template.ar
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: AR-Vision
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
