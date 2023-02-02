@@ -15,6 +15,7 @@ public class Socket : MonoBehaviour {
 
     Task Connected;
     bool specified;
+    bool recieving;
 
     public BoundingBoxRenderer BBrenderer;
     private void Start() {
@@ -22,7 +23,7 @@ public class Socket : MonoBehaviour {
         socket = new ClientWebSocket();
         specified = false;
 
-        Connected = socket.ConnectAsync(new Uri("ws://localhost:8000"), CancellationToken.None);
+        Connected = socket.ConnectAsync(new Uri("ws://localhost:7000"), CancellationToken.None);
     }
 
     private async void Update() {
@@ -31,31 +32,28 @@ public class Socket : MonoBehaviour {
             specified = true;
             await socket.SendAsync(Encoding.UTF8.GetBytes("R"), WebSocketMessageType.Text, true, CancellationToken.None);
         } else if (specified) {
-            string type = await Receive();
-            if (type == "Update")
-                await GetNewTrees(); // Doesn't account for trees that need to be deleted
-            else if (type == "Remove") {
-                BBrenderer.ClearTrees(); // Can call this because remove and add trees are done as separate events
-                await RemoveTrees();
+            if (!recieving) {
+                string newTree = await Receive();
+                if (newTree.Substring(0, 6) == "Update")
+                    GetNewTrees(newTree.Substring(6)); // Doesn't account for trees that need to be deleted
+                else if (newTree.Substring(0, 6) == "Remove") {
+                    Debug.Log("seen");
+                    BBrenderer.ClearTrees(); // Can call this because remove and add trees are done as separate events
+                    RemoveTrees(newTree.Substring(6));
+                }
             }
         }
     }
 
-    private async Task GetNewTrees() {
-        ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[2048]);
-        string tree = await Receive();
+    private void GetNewTrees(string tree) {
+        Debug.Log("Receive: " + tree);
 
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
-
         BBrenderer.UpdateTree(inputTree);
     }
 
-    private async Task RemoveTrees() {
-        ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[2048]);
-        string tree = await Receive();
-
+    private void RemoveTrees(string tree) {
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
-
         BBrenderer.RemoveTrees(inputTree);
     }
 
@@ -64,6 +62,7 @@ public class Socket : MonoBehaviour {
         string recvStr;
 
         WebSocketReceiveResult result;
+        recieving = true;
         using (MemoryStream ms = new MemoryStream()) {
             do {
                 result = await socket.ReceiveAsync(buffer, CancellationToken.None);
@@ -74,6 +73,8 @@ public class Socket : MonoBehaviour {
             using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
                 recvStr = await reader.ReadToEndAsync();
         }
+
+        recieving = false;
 
         return recvStr;
     }
