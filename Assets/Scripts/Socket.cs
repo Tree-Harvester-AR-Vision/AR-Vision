@@ -35,24 +35,33 @@ public class Socket : MonoBehaviour {
             if (!recieving) {
                 string newTree = await Receive();
                 if (newTree.Substring(0, 6) == "Update")
-                    GetNewTrees(newTree.Substring(6)); // Doesn't account for trees that need to be deleted
+                    UpdateNewTrees(newTree.Substring(6)); // Doesn't account for trees that need to be deleted
                 else if (newTree.Substring(0, 6) == "Remove") {
-                    Debug.Log("seen");
                     BBrenderer.ClearTrees(); // Can call this because remove and add trees are done as separate events
                     RemoveTrees(newTree.Substring(6));
+                } else if (newTree.Substring(0, 6) == "Create") {
+                    GetNewTrees(newTree.Substring(6));
                 }
             }
         }
     }
 
-    private void GetNewTrees(string tree) {
-        Debug.Log("Receive: " + tree);
+    private void UpdateNewTrees(string tree) {
+        Debug.Log("Update: " + tree);
 
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
         BBrenderer.UpdateTree(inputTree);
     }
 
+        private void GetNewTrees(string tree) {
+        Debug.Log("Create: " + tree);
+
+        InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
+        BBrenderer.CreateTree(inputTree);
+    }
+
     private void RemoveTrees(string tree) {
+        Debug.Log("Remove: " + tree);
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
         BBrenderer.RemoveTrees(inputTree);
     }
