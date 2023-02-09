@@ -34,13 +34,13 @@ public class Socket : MonoBehaviour {
         } else if (specified) {
             if (!recieving) {
                 string newTree = await Receive();
-                if (newTree.Substring(0, 6) == "Update")
-                    UpdateNewTrees(newTree.Substring(6)); // Doesn't account for trees that need to be deleted
+                if (newTree.Substring(0, 6) == "Create")
+                    GetNewTrees(newTree.Substring(6));
+                else if (newTree.Substring(0, 6) == "Update")
+                    UpdateNewTrees(newTree.Substring(6));
                 else if (newTree.Substring(0, 6) == "Remove") {
                     BBrenderer.ClearTrees(); // Can call this because remove and add trees are done as separate events
                     RemoveTrees(newTree.Substring(6));
-                } else if (newTree.Substring(0, 6) == "Create") {
-                    GetNewTrees(newTree.Substring(6));
                 }
             }
         }

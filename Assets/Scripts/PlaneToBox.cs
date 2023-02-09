@@ -30,7 +30,6 @@ public class PlaneToBox : MonoBehaviour
         transform.Rotate(90, 90, 90);
 
         transform.position = camPos.TransformPoint(Center); // takes from camera's space to world space
-        Debug.Log("Center: " + camPos.TransformPoint(Center));
         transform.localScale = new Vector3(Width / OrigWidth, 1, Height / OrigHeight); // gets new scale as a ratio of original scale
     }
 }

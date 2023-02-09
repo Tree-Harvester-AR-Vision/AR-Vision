@@ -18,7 +18,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
     }
 
     public void UpdateTree(InputTree tree) {
-        if (treesToUpdate.ContainsKey(tree.Key)) {
+        if (renderedTrees.ContainsKey(tree.Key)) {
             treesToUpdate[tree.Key] = tree;
         }
     }
@@ -29,6 +29,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
 
     public void RemoveTrees(InputTree tree) {
         if (renderedTrees.ContainsKey(tree.Key)) {
+            renderedTrees[tree.Key] = null;
             Destroy(renderedTrees[tree.Key]);
         }
     }
@@ -53,9 +54,8 @@ public class BoundingBoxRenderer : MonoBehaviour {
             script.Center = tree.Value.boundingBox.Center;
         }
 
-        Debug.Log(treesToUpdate.Count); // doesn't recognize trees ever
         foreach(KeyValuePair<int, InputTree> tree in treesToUpdate) {
-            if (renderedTrees.ContainsKey(tree.Key)) {
+            if (renderedTrees.ContainsKey(tree.Key) && renderedTrees[tree.Key] != null) {
                 PlaneToBox script = renderedTrees[tree.Key].GetComponent<PlaneToBox>();
                 script.Width = tree.Value.boundingBox.Width;
                 script.Height = tree.Value.boundingBox.Height;
