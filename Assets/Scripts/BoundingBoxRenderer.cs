@@ -29,8 +29,8 @@ public class BoundingBoxRenderer : MonoBehaviour {
 
     public void RemoveTrees(InputTree tree) {
         if (renderedTrees.ContainsKey(tree.Key)) {
-            renderedTrees[tree.Key] = null;
             Destroy(renderedTrees[tree.Key]);
+            renderedTrees[tree.Key] = null;
         }
     }
 
