@@ -41,6 +41,12 @@ public class BoundingBoxRenderer : MonoBehaviour {
     void Update() {
         foreach(KeyValuePair<int, InputTree> tree in treesToCreate) {
 
+            // don't create something that already exists
+            if (renderedTrees.ContainsKey(tree.Key) && renderedTrees[tree.Key] != null) {
+                treesToCreate.Clear();
+                return;
+            }
+
             GameObject newBox = Instantiate(boundingBox, Vector3.zero, Quaternion.identity);
             newBox.GetComponent<PlaneToBox>().camPos = camPos;
 

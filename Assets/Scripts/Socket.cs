@@ -23,6 +23,8 @@ public class Socket : MonoBehaviour {
         socket = new ClientWebSocket();
         specified = false;
 
+        // to connect, make sure to use computer's current IP address, otherwise hololens build
+        // will not connect
         Connected = socket.ConnectAsync(new Uri("ws://localhost:7000"), CancellationToken.None);
     }
 
