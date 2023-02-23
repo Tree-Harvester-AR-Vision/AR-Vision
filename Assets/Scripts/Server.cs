@@ -50,16 +50,11 @@ public class Server : MonoBehaviour {
 			while ((cmd = m_Driver.PopEventForConnection(m_Connections[i], out DataStreamReader stream)) != NetworkEvent.Type.Empty) {
 				if (cmd == NetworkEvent.Type.Data) {
 
-					// Converts bytes to string
-					// commented out because doesn't work yet
-					// NativeArray<byte> byteRead = new();
-					// stream.ReadBytes(byteRead);
-					// var byteSlice = new NativeSlice<byte>(byteRead).SliceConvert<byte>();
-					// byte[] byteArr = new byte[] { };
-					// byteSlice.CopyTo(byteArr);
-					// string text = Encoding.ASCII.GetString(byteArr);
+					// Makes data useable
+					FixedString128Bytes str = stream.ReadFixedString128();
+					string text = str.ToString();
 
-					// Debug.Log("Got " + text + " from client");
+					Debug.Log("Got " + text + " from client");
 
 				} else if (cmd == NetworkEvent.Type.Disconnect) {
 					Debug.Log("Client disconnected from server");

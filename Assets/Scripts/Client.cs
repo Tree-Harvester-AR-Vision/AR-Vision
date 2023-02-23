@@ -37,9 +37,12 @@ public class Client : MonoBehaviour {
 
                 // Sends type of client this client is
                 // TODO: Make reliable
-				string value = "reciever";
                 m_Driver.BeginSend(m_Connection, out var writer);
-                writer.WriteBytes(new NativeArray<byte>(Encoding.ASCII.GetBytes(value), Allocator.Temp));
+
+                // Creates a transportable string
+                FixedString128Bytes formmatedStr = FixedString.Format("reciever", 0); // 0 doesn't mean anything
+                writer.WriteFixedString128(formmatedStr);
+
                 m_Driver.EndSend(writer);
 
                 Debug.Log("Sent");
