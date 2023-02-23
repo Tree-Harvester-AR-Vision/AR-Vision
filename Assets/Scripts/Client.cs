@@ -1,7 +1,8 @@
 using System.Text;
-using Unity.Collections;
 using UnityEngine;
+using Unity.Collections;
 using Unity.Networking.Transport;
+using Unity.Networking.Transport.Utilities;
 
 public class Client : MonoBehaviour {
 
@@ -9,8 +10,11 @@ public class Client : MonoBehaviour {
     public NetworkConnection m_Connection;
     public bool Done;
 
+    NetworkPipeline m_RelPL;
+
     void Start() {
         m_Driver = NetworkDriver.Create();
+        m_RelPL = m_Driver.CreatePipeline(typeof(ReliableSequencedPipelineStage));
         m_Connection = default;
 
         var endpoint = NetworkEndPoint.LoopbackIpv4;
@@ -36,8 +40,7 @@ public class Client : MonoBehaviour {
                 Debug.Log("Now connected to server");
 
                 // Sends type of client this client is
-                // TODO: Make reliable
-                m_Driver.BeginSend(m_Connection, out var writer);
+                m_Driver.BeginSend(m_RelPL, m_Connection, out var writer);
 
                 // Creates a transportable string
                 FixedString128Bytes formmatedStr = FixedString.Format("reciever", 0); // 0 doesn't mean anything
