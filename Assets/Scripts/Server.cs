@@ -9,12 +9,14 @@ public class Server : MonoBehaviour {
 
     private NativeList<NetworkConnection> m_Connections;
 	private NetworkPipeline m_RelPL;
+	private NetworkPipeline m_FragPL;
 	private NetworkConnection Recvr = default;
 	private NetworkConnection Trnsmtr = default;
 
-    void Start() {
+    private void Start() {
         m_Driver = NetworkDriver.Create();
 		m_RelPL = m_Driver.CreatePipeline(typeof(ReliableSequencedPipelineStage));
+		m_FragPL = m_Driver.CreatePipeline(typeof(FragmentationPipelineStage));
         var endpoint = NetworkEndPoint.AnyIpv4;
         endpoint.Port = 7000;
 
@@ -27,7 +29,7 @@ public class Server : MonoBehaviour {
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
     }
 
-    void Update() {
+    private void Update() {
         m_Driver.ScheduleUpdate().Complete();
 
         // Clean up connections
@@ -44,11 +46,12 @@ public class Server : MonoBehaviour {
 			return;
 		}
 
-		// code for receiving and transmitting
+		string newTree = ReceiveData();
+		SendData(newTree);
 
 	}
 
-	void OnDestroy() {
+	private void OnDestroy() {
 		if (m_Driver.IsCreated) {
             m_Driver.Dispose();
             m_Connections.Dispose();
@@ -56,7 +59,7 @@ public class Server : MonoBehaviour {
 	}
 
 
-	void WaitForConnections() {
+	private void WaitForConnections() {
 		// Accept new connections
         NetworkConnection c;
         while ((c = m_Driver.Accept()) != default) {
@@ -73,8 +76,7 @@ public class Server : MonoBehaviour {
 				if (cmd == NetworkEvent.Type.Data) {
 
 					// Makes data useable
-					FixedString128Bytes str = stream.ReadFixedString128();
-					string text = str.ToString();
+					string text = TransportHelper.ReceiveString(stream);
 
 					if (text == "receiver") {
 						Recvr = m_Connections[i];
@@ -88,5 +90,28 @@ public class Server : MonoBehaviour {
 				}
 			}
 		}
+
+		if (Recvr != default && Trnsmtr != default) {
+			TransportHelper.SendString(m_Driver, m_RelPL, Trnsmtr, "ready");
+		}
+	}
+
+	private string ReceiveData() {
+		NetworkEvent.Type cmd;
+		string text = "";
+		while ((cmd = m_Driver.PopEventForConnection(Trnsmtr, out DataStreamReader stream, out m_FragPL)) != NetworkEvent.Type.Empty) {
+			if (cmd == NetworkEvent.Type.Data) {
+				text = TransportHelper.ReceiveString(stream);
+			} else if (cmd == NetworkEvent.Type.Disconnect) {
+				Debug.Log("Client disconnected from server");
+				Trnsmtr = default;
+			}
+		} 
+
+		return text;
+	}
+
+	private void SendData(string newTree) {
+		TransportHelper.SendString(m_Driver, m_FragPL, Recvr, newTree);
 	}
 }
