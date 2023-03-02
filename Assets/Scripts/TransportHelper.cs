@@ -11,16 +11,14 @@ public static class TransportHelper {
         driver.BeginSend(pipeline, connection, out var writer);
 
         // Creates a transportable string
-        FixedString128Bytes formmatedStr = FixedString.Format(str, 0); // 0 doesn't mean anything
-        writer.WriteFixedString128(formmatedStr);
+        FixedString4096Bytes formmatedStr = new FixedString4096Bytes(str);
+        writer.WriteFixedString4096(formmatedStr);
 
         driver.EndSend(writer);
-
-        Debug.Log("Sent");
     }
 
     public static string ReceiveString(DataStreamReader stream) {
-        FixedString128Bytes str = stream.ReadFixedString128();
+        FixedString4096Bytes str = stream.ReadFixedString4096();
 		return str.ToString();
     }
 }

@@ -11,6 +11,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
     public Transform camPos;
 
     void Awake() {
+        treeTimer = new Dictionary<int, int>();
         renderedTrees = new Dictionary<int, GameObject>();
     }
 
@@ -40,25 +41,34 @@ public class BoundingBoxRenderer : MonoBehaviour {
         script.Center = tree.boundingBox.Center;
     }
 
-    private void RemoveTree(InputTree tree) {
-        if (renderedTrees.ContainsKey(tree.Key)) {
-            Destroy(renderedTrees[tree.Key]);
-            renderedTrees[tree.Key] = null;
+    private void RemoveTree(int key) {
+        if (renderedTrees.ContainsKey(key)) {
+            Destroy(renderedTrees[key]);
+            renderedTrees[key] = null;
         }
     }
 
     void Update() {
+        List<int> itemsToRemove = new List<int>();
         foreach (int i in treeTimer.Keys) {
             if (treeTimer[i] <= 0) {
-                RemoveTree(renderedTrees[i].GetComponent<InputTree>());
-                treeTimer.Remove(i);
+                RemoveTree(i);
+                itemsToRemove.Add(i);
             } else {
                 treeTimer[i]--;
             }
         }
+
+        foreach (int i in itemsToRemove) {
+            treeTimer.Remove(i);
+        }
     }
 
     public void ParseBoundingBoxData(string str) {
+        if (str.Length == 0) { // if incomplete data, don't work with it
+            return;
+        }
+
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(str);
 
         if (!renderedTrees.ContainsKey(inputTree.Key) || renderedTrees[inputTree.Key] == null) {

@@ -25,7 +25,7 @@ public class Socket : MonoBehaviour {
 
         // to connect, make sure to use computer's current IP address, otherwise hololens build
         // will not connect
-        Connected = socket.ConnectAsync(new Uri("ws://localhost:7000"), CancellationToken.None);
+        Connected = socket.ConnectAsync(new Uri("ws://192.168.137.203:7000"), CancellationToken.None);
     }
 
     private async void Update() {
@@ -41,7 +41,7 @@ public class Socket : MonoBehaviour {
                 else if (newTree.Substring(0, 6) == "Update")
                     UpdateNewTrees(newTree.Substring(6));
                 else if (newTree.Substring(0, 6) == "Remove") {
-                    BBrenderer.ClearTrees(); // Can call this because remove and add trees are done as separate events
+                    //BBrenderer.ClearTrees(); // Can call this because remove and add trees are done as separate events
                     RemoveTrees(newTree.Substring(6));
                 }
             }
@@ -52,20 +52,20 @@ public class Socket : MonoBehaviour {
         Debug.Log("Update: " + tree);
 
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
-        BBrenderer.UpdateTree(inputTree);
+        //BBrenderer.UpdateTree(inputTree);
     }
 
         private void GetNewTrees(string tree) {
         Debug.Log("Create: " + tree);
 
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
-        BBrenderer.CreateTree(inputTree);
+        //BBrenderer.CreateTree(inputTree);
     }
 
     private void RemoveTrees(string tree) {
         Debug.Log("Remove: " + tree);
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
-        BBrenderer.RemoveTrees(inputTree);
+        //BBrenderer.RemoveTrees(inputTree);
     }
 
     private async Task<string> Receive() {

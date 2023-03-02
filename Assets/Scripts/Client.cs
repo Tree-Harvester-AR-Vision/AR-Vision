@@ -1,8 +1,5 @@
-using System.Text;
 using UnityEngine;
-using Unity.Collections;
 using Unity.Networking.Transport;
-using Unity.Networking.Transport.Utilities;
 
 public class Client : MonoBehaviour {
 
@@ -30,10 +27,7 @@ public class Client : MonoBehaviour {
         m_Driver.ScheduleUpdate().Complete();
 
         if (!m_Connection.IsCreated) {
-            if (!Done) {
-                Debug.LogError("Something went wrong during connect");
-			}
-
+            Debug.LogError("Something went wrong during connect");
             return;
 		}
 
