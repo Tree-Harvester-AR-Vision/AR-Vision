@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class BoundingBoxRenderer : MonoBehaviour {
     private Dictionary<int, GameObject> renderedTrees;
-    private Dictionary<int, int> treeTimer;
+    private Dictionary<int, float> treeTimer;
 
     public GameObject boundingBox;
     public Transform camPos;
 
     void Awake() {
-        treeTimer = new Dictionary<int, int>();
+        treeTimer = new Dictionary<int, float>();
         renderedTrees = new Dictionary<int, GameObject>();
     }
 
     private void UpdateTree(InputTree tree) {
-        if (renderedTrees.ContainsKey(tree.Key) && renderedTrees[tree.Key] != null) {
+        if (renderedTrees[tree.Key] != null) {
             PlaneToBox script = renderedTrees[tree.Key].GetComponent<PlaneToBox>();
             script.Width = tree.boundingBox.Width;
             script.Height = tree.boundingBox.Height;
@@ -29,10 +29,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
         GameObject newBox = Instantiate(boundingBox, Vector3.zero, Quaternion.identity);
         newBox.GetComponent<PlaneToBox>().camPos = camPos;
 
-        if (!renderedTrees.ContainsKey(tree.Key)) {
-            renderedTrees.Add(tree.Key, newBox);
-        } else { renderedTrees[tree.Key] = newBox; }
-
+        renderedTrees.Add(tree.Key, newBox);
         CreateTimer(tree.Key);
 
         PlaneToBox script = renderedTrees[tree.Key].GetComponent<PlaneToBox>();
@@ -44,23 +41,19 @@ public class BoundingBoxRenderer : MonoBehaviour {
     private void RemoveTree(int key) {
         if (renderedTrees.ContainsKey(key)) {
             Destroy(renderedTrees[key]);
-            renderedTrees[key] = null;
+            renderedTrees.Remove(key);
         }
     }
 
     void Update() {
-        List<int> itemsToRemove = new List<int>();
-        foreach (int i in treeTimer.Keys) {
+        List<int> keys = new List<int>(treeTimer.Keys);
+        foreach (int i in keys) {
             if (treeTimer[i] <= 0) {
                 RemoveTree(i);
-                itemsToRemove.Add(i);
+                treeTimer.Remove(i);
             } else {
-                treeTimer[i]--;
+                treeTimer[i] -= Time.deltaTime;
             }
-        }
-
-        foreach (int i in itemsToRemove) {
-            treeTimer.Remove(i);
         }
     }
 
@@ -71,16 +64,16 @@ public class BoundingBoxRenderer : MonoBehaviour {
 
         InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(str);
 
-        if (!renderedTrees.ContainsKey(inputTree.Key) || renderedTrees[inputTree.Key] == null) {
+        if (!renderedTrees.ContainsKey(inputTree.Key)) {
             CreateTree(inputTree);
         } else { UpdateTree(inputTree); }
     }
 
     private void ResetTimer(int Key) {
-        treeTimer[Key] = 3;
+        treeTimer[Key] = 5f;
     }
 
     private void CreateTimer(int Key) {
-        treeTimer.Add(Key, 3);
+        treeTimer.Add(Key, 5f);
     }
 }
