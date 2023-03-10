@@ -25,7 +25,7 @@ public class Socket : MonoBehaviour {
 
         // to connect, make sure to use computer's current IP address, otherwise hololens build
         // will not connect
-        Connected = socket.ConnectAsync(new Uri("ws://localhost:7000"), CancellationToken.None);
+        Connected = socket.ConnectAsync(new Uri("ws://10.42.0.174:7000"), CancellationToken.None);
     }
 
     private async void Update() {
