@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Collections;
 using UnityEngine.Assertions;
+using System.Collections.Generic;
 using Unity.Networking.Transport;
 
 public class Server : MonoBehaviour {
@@ -46,9 +47,11 @@ public class Server : MonoBehaviour {
 			return;
 		}
 
-		string newTree = ReceiveData();
-		SendData(newTree);
+		List<string> newTrees = ReceiveData();
 
+		foreach (string tree in newTrees) {
+			SendData(tree);
+		}
 	}
 
 	private void OnDestroy() {
@@ -96,19 +99,19 @@ public class Server : MonoBehaviour {
 		}
 	}
 
-	private string ReceiveData() {
+	private List<string> ReceiveData() {
 		NetworkEvent.Type cmd;
-		string text = "";
+		List<string> trees = new List<string>();
 		while ((cmd = m_Driver.PopEventForConnection(Trnsmtr, out DataStreamReader stream, out m_FragPL)) != NetworkEvent.Type.Empty) {
 			if (cmd == NetworkEvent.Type.Data) {
-				text = TransportHelper.ReceiveString(stream);
+				trees.Add(TransportHelper.ReceiveString(stream));
 			} else if (cmd == NetworkEvent.Type.Disconnect) {
 				Debug.Log("Client disconnected from server");
 				Trnsmtr = default;
 			}
 		} 
 
-		return text;
+		return trees;
 	}
 
 	private void SendData(string newTree) {

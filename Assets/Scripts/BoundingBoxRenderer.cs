@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class BoundingBoxRenderer : MonoBehaviour {
     private Dictionary<int, GameObject> renderedTrees;
-    private Dictionary<int, float> treeTimer;
+    private Dictionary<int, int> treeTimer;
 
     public GameObject boundingBox;
     public Transform camPos;
 
     void Awake() {
-        treeTimer = new Dictionary<int, float>();
+        treeTimer = new Dictionary<int, int>();
         renderedTrees = new Dictionary<int, GameObject>();
     }
 
@@ -52,7 +52,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
                 RemoveTree(i);
                 treeTimer.Remove(i);
             } else {
-                treeTimer[i] -= Time.deltaTime;
+                treeTimer[i] -= 1;
             }
         }
     }
@@ -70,10 +70,10 @@ public class BoundingBoxRenderer : MonoBehaviour {
     }
 
     private void ResetTimer(int Key) {
-        treeTimer[Key] = 5f;
+        treeTimer[Key] = 3;
     }
 
     private void CreateTimer(int Key) {
-        treeTimer.Add(Key, 5f);
+        treeTimer.Add(Key, 3);
     }
 }
