@@ -1,74 +1,79 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class BoundingBoxRenderer : MonoBehaviour {
-
-    Dictionary<int, InputTree> treesToUpdate;
-    Dictionary<int, InputTree> treesToCreate;
-    Dictionary<int, GameObject> renderedTrees;
+    private Dictionary<int, GameObject> renderedTrees;
+    private Dictionary<int, int> treeTimer;
 
     public GameObject boundingBox;
     public Transform camPos;
 
     void Awake() {
-        treesToUpdate = new Dictionary<int, InputTree>();
+        treeTimer = new Dictionary<int, int>();
         renderedTrees = new Dictionary<int, GameObject>();
-        treesToCreate = new Dictionary<int, InputTree>();
     }
 
-    public void UpdateTree(InputTree tree) {
-        if (renderedTrees.ContainsKey(tree.Key)) {
-            treesToUpdate[tree.Key] = tree;
+    private void UpdateTree(InputTree tree) {
+        if (renderedTrees[tree.Key] != null) {
+            PlaneToBox script = renderedTrees[tree.Key].GetComponent<PlaneToBox>();
+            script.Width = tree.boundingBox.Width;
+            script.Height = tree.boundingBox.Height;
+            script.Center = tree.boundingBox.Center;
+            ResetTimer(tree.Key);
         }
     }
 
-    public void CreateTree(InputTree tree) {
-        treesToCreate.Add(tree.Key, tree);
+    private void CreateTree(InputTree tree) {
+        GameObject newBox = Instantiate(boundingBox, Vector3.zero, Quaternion.identity);
+        newBox.GetComponent<PlaneToBox>().camPos = camPos;
+
+        renderedTrees.Add(tree.Key, newBox);
+        CreateTimer(tree.Key);
+
+        PlaneToBox script = renderedTrees[tree.Key].GetComponent<PlaneToBox>();
+        script.Width = tree.boundingBox.Width;
+        script.Height = tree.boundingBox.Height;
+        script.Center = tree.boundingBox.Center;
     }
 
-    public void RemoveTrees(InputTree tree) {
-        if (renderedTrees.ContainsKey(tree.Key)) {
-            Destroy(renderedTrees[tree.Key]);
-            renderedTrees[tree.Key] = null;
+    private void RemoveTree(int key) {
+        if (renderedTrees.ContainsKey(key)) {
+            Destroy(renderedTrees[key]);
+            renderedTrees.Remove(key);
         }
-    }
-
-    public void ClearTrees() {
-        treesToUpdate.Clear();
     }
 
     void Update() {
-        foreach(KeyValuePair<int, InputTree> tree in treesToCreate) {
-
-            // don't create something that already exists
-            if (renderedTrees.ContainsKey(tree.Key) && renderedTrees[tree.Key] != null) {
-                treesToCreate.Clear();
-                return;
-            }
-
-            GameObject newBox = Instantiate(boundingBox, Vector3.zero, Quaternion.identity);
-            newBox.GetComponent<PlaneToBox>().camPos = camPos;
-
-            if (!renderedTrees.ContainsKey(tree.Key)) {
-                renderedTrees.Add(tree.Key, newBox);
-            } else { renderedTrees[tree.Key] = newBox; }
-
-            PlaneToBox script = renderedTrees[tree.Key].GetComponent<PlaneToBox>();
-            script.Width = tree.Value.boundingBox.Width;
-            script.Height = tree.Value.boundingBox.Height;
-            script.Center = tree.Value.boundingBox.Center;
-        }
-
-        foreach(KeyValuePair<int, InputTree> tree in treesToUpdate) {
-            if (renderedTrees.ContainsKey(tree.Key) && renderedTrees[tree.Key] != null) {
-                PlaneToBox script = renderedTrees[tree.Key].GetComponent<PlaneToBox>();
-                script.Width = tree.Value.boundingBox.Width;
-                script.Height = tree.Value.boundingBox.Height;
-                script.Center = tree.Value.boundingBox.Center;
+        List<int> keys = new List<int>(treeTimer.Keys);
+        foreach (int i in keys) {
+            if (treeTimer[i] <= 0) {
+                RemoveTree(i);
+                treeTimer.Remove(i);
+            } else {
+                treeTimer[i] -= 1;
             }
         }
+    }
 
-        treesToCreate.Clear();
+    public void ParseBoundingBoxData(string str) {
+        if (str.Length == 0) { // if incomplete data, don't work with it
+            return;
+        }
+
+        InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(str);
+
+        if (!renderedTrees.ContainsKey(inputTree.Key)) {
+            CreateTree(inputTree);
+        } else { UpdateTree(inputTree); }
+    }
+
+    private void ResetTimer(int Key) {
+        treeTimer[Key] = 3;
+    }
+
+    private void CreateTimer(int Key) {
+        treeTimer.Add(Key, 3);
     }
 }
