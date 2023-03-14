@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
 
 public class BoundingBoxRenderer : MonoBehaviour {
@@ -27,6 +28,10 @@ public class BoundingBoxRenderer : MonoBehaviour {
 
     private void CreateTree(InputTree tree) {
         GameObject newBox = Instantiate(boundingBox, Vector3.zero, Quaternion.identity);
+
+        TMP_Text text = newBox.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
+        text.text = $"Species: {tree.Species}\nAge: {tree.Age}";
+
         newBox.GetComponent<PlaneToBox>().camPos = camPos;
 
         renderedTrees.Add(tree.Key, newBox);
