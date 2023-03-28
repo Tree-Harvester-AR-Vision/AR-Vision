@@ -303,6 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b80a66f4506f44bb17dcda51aa16b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IP: 192.168.137.1
   BBrenderer: {fileID: 1947183421}
 --- !u!1 &569164459
 GameObject:
@@ -318,6 +319,7 @@ GameObject:
   - component: {fileID: 569164463}
   - component: {fileID: 569164462}
   - component: {fileID: 569164461}
+  - component: {fileID: 569164466}
   m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -449,6 +451,24 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &569164466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569164459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Device: 0
+  m_PoseSource: 2
+  m_PoseProviderComponent: {fileID: 0}
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_UseRelativeTransform: 0
 --- !u!1 &624402497
 GameObject:
   m_ObjectHideFlags: 0
