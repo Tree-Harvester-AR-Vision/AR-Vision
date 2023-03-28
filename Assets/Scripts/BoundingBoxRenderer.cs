@@ -21,6 +21,10 @@ public class BoundingBoxRenderer : MonoBehaviour {
         if (renderedTrees.ContainsKey(tree.Key)) {
             treesToUpdate[tree.Key] = tree;
         }
+        else
+        {
+            CreateTree(tree);
+        }
     }
 
     public void CreateTree(InputTree tree) {
@@ -30,7 +34,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
     public void RemoveTrees(InputTree tree) {
         if (renderedTrees.ContainsKey(tree.Key)) {
             Destroy(renderedTrees[tree.Key]);
-            renderedTrees[tree.Key] = null;
+            renderedTrees.Remove(tree.Key);
         }
     }
 
