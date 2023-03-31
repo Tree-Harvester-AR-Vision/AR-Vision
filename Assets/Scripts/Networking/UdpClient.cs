@@ -1,41 +1,45 @@
+using System;
+using System.Net;
 using System.Text;
+using Networking;
 using UnityEngine;
-using Unity.Collections;
-using Unity.Networking.Transport;
-using Unity.Networking.Transport.Utilities;
 
-public class Client : MonoBehaviour {
-
-    public NetworkDriver m_Driver;
-    public NetworkConnection m_Connection;
+public class UdpClient : TreeUpdateHandler, IWebClient {
+	private GameObject _cube;
+	private readonly System.Net.Sockets.UdpClient _client;
+	
     public bool Done;
+    
+    private readonly string _ip;
+    private readonly ushort _port;
+    private IPEndPoint _remoteIpEndPoint;
 
-    NetworkPipeline m_RelPL;
-
-    void Start() {
-        m_Driver = NetworkDriver.Create();
-        m_RelPL = m_Driver.CreatePipeline(typeof(ReliableSequencedPipelineStage));
-        m_Connection = default;
-
-        var endpoint = NetworkEndPoint.LoopbackIpv4;
-        endpoint.Port = 7000;
-        m_Connection = m_Driver.Connect(endpoint);
+    public UdpClient(string ip, ushort port, GameObject gameObject, BoundingBoxRenderer boundingBoxRenderer)
+    {
+	    _ip = ip;
+	    _port = port;
+	    _cube = gameObject;
+	    _client = new System.Net.Sockets.UdpClient(port);
+	    _remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+	    BBrenderer = boundingBoxRenderer;
     }
 
-    void Update() {
-        m_Driver.ScheduleUpdate().Complete();
+    public void Update() {
+	    try{
+		    // Blocks until a message returns on this socket from a remote host.
+		    Byte[] receiveBytes = _client.Receive(ref _remoteIpEndPoint);
 
-        if (!m_Connection.IsCreated) {
-            if (!Done) {
-                Debug.LogError("Something went wrong during connect");
-			}
+		    string returnData = Encoding.ASCII.GetString(receiveBytes);
+		    
+		    UpdateTrees(returnData);
 
-            return;
-		}
 
-		NetworkEvent.Type cmd;
+	    }
+	    catch ( Exception e ){
+		    Console.WriteLine(e.ToString());
+	    }
 
-		while ((cmd = m_Connection.PopEvent(m_Driver, out DataStreamReader stream)) != NetworkEvent.Type.Empty) {
+	    /*while ((cmd = m_Connection.PopEvent(m_Driver, out DataStreamReader stream)) != NetworkEvent.Type.Empty) {
             if (cmd == NetworkEvent.Type.Connect) {
                 Debug.Log("Now connected to server");
 
@@ -62,10 +66,10 @@ public class Client : MonoBehaviour {
                 Debug.Log("Client got disconnected from server");
                 m_Connection = default;
 			}
-		}
+		}*/
     }
 
 	public void OnDestroy() {
-        m_Driver.Dispose();
+        _client.Dispose();
 	}
 }
