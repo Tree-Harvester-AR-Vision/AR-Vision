@@ -1,7 +1,10 @@
+using System.Threading.Tasks;
+
 namespace Networking
 {
     public interface IWebClient
     {
-        void Update();
+        Task Update();
+        void Remove();
     }
 }

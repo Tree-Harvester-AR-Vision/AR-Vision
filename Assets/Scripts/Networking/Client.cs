@@ -6,6 +6,7 @@ using Unity.Collections;
 using Unity.Networking.Transport;
 using Unity.Networking.Transport.Utilities;
 using TcpClient = Networking.TcpClient;
+using UdpClient = Networking.UdpClient;
 
 public class Client : MonoBehaviour {
 	
@@ -14,16 +15,11 @@ public class Client : MonoBehaviour {
 	public ConnectionType Type;
 	public GameObject Cube;
 	public BoundingBoxRenderer BBrenderer;
+	public double UdpTimeout = 1.0;
 
 	private IWebClient _client;
 
-    public NetworkDriver m_Driver;
-    public NetworkConnection m_Connection;
-    public bool Done;
-
-    NetworkPipeline m_RelPL;
-
-    void Start() {
+	void Start() {
 	    switch (Type)
 	    {
 		    case ConnectionType.None:
@@ -32,7 +28,7 @@ public class Client : MonoBehaviour {
 			    _client = new TcpClient(IP, Port, Cube, BBrenderer);
 			    break;
 		    case ConnectionType.UDP:
-			    _client = new UdpClient(IP, Port, Cube, BBrenderer);
+			    _client = new UdpClient(IP, Port, Cube, BBrenderer, UdpTimeout);
 			    break;
 	    }
     }
@@ -42,8 +38,9 @@ public class Client : MonoBehaviour {
 	    _client.Update();
     }
 
-	public void OnDestroy() {
-        m_Driver.Dispose();
+	public void OnDestroy()
+	{
+		_client.Remove();
 	}
 }
 

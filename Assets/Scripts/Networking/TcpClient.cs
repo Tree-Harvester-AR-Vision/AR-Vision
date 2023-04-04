@@ -51,7 +51,7 @@ namespace Networking
         {
         }
 
-        public async void Update()
+        public async Task Update()
         {
             //cube.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
             if (_socket != null)
@@ -111,6 +111,11 @@ namespace Networking
                     Debug.Log($"#\tConnection failed ({_connectionAttempt})");
                 }
             }
+        }
+
+        public void Remove()
+        {
+            
         }
 
 
