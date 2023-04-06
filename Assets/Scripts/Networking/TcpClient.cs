@@ -51,7 +51,7 @@ namespace Networking
         {
         }
 
-        public async Task Update()
+        public async void Update()
         {
             //cube.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
             if (_socket != null)

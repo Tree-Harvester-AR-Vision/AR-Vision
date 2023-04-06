@@ -4,7 +4,7 @@ namespace Networking
 {
     public interface IWebClient
     {
-        Task Update();
+        void Update();
         void Remove();
     }
 }

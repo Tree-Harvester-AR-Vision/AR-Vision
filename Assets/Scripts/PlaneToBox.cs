@@ -26,7 +26,7 @@ public class PlaneToBox : MonoBehaviour
 
 
     void Update() {
-        transform.LookAt(Camera.main.transform.position);
+        transform.LookAt(UnityEngine.Camera.main.transform.position);
         transform.Rotate(90, 90, 90);
 
         transform.position = camPos.TransformPoint(Center); // takes from camera's space to world space
