@@ -113,6 +113,11 @@ namespace Networking
             }
         }
 
+        public void Remove()
+        {
+            
+        }
+
 
         private async Task<string> Receive()
         {
