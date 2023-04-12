@@ -58,3 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+_build/
+_build_BurstDebugInformation_DoNotShip/
+Builds_BurstDebugInformation_DoNotShip/
+
