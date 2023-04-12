@@ -1,7 +1,6 @@
 using UnityEngine;
 using Unity.Collections;
 using UnityEngine.Assertions;
-using System.Collections.Generic;
 using Unity.Networking.Transport;
 
 public class Server : MonoBehaviour {
@@ -10,14 +9,12 @@ public class Server : MonoBehaviour {
 
     private NativeList<NetworkConnection> m_Connections;
 	private NetworkPipeline m_RelPL;
-	private NetworkPipeline m_FragPL;
 	private NetworkConnection Recvr = default;
 	private NetworkConnection Trnsmtr = default;
 
-    private void Start() {
+    void Start() {
         m_Driver = NetworkDriver.Create();
 		m_RelPL = m_Driver.CreatePipeline(typeof(ReliableSequencedPipelineStage));
-		m_FragPL = m_Driver.CreatePipeline(typeof(FragmentationPipelineStage));
         var endpoint = NetworkEndPoint.AnyIpv4;
         endpoint.Port = 7000;
 
@@ -30,7 +27,7 @@ public class Server : MonoBehaviour {
         m_Connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
     }
 
-    private void Update() {
+    void Update() {
         m_Driver.ScheduleUpdate().Complete();
 
         // Clean up connections
@@ -47,14 +44,11 @@ public class Server : MonoBehaviour {
 			return;
 		}
 
-		List<string> newTrees = ReceiveData();
+		// code for receiving and transmitting
 
-		foreach (string tree in newTrees) {
-			SendData(tree);
-		}
 	}
 
-	private void OnDestroy() {
+	void OnDestroy() {
 		if (m_Driver.IsCreated) {
             m_Driver.Dispose();
             m_Connections.Dispose();
@@ -62,7 +56,7 @@ public class Server : MonoBehaviour {
 	}
 
 
-	private void WaitForConnections() {
+	void WaitForConnections() {
 		// Accept new connections
         NetworkConnection c;
         while ((c = m_Driver.Accept()) != default) {
@@ -79,7 +73,8 @@ public class Server : MonoBehaviour {
 				if (cmd == NetworkEvent.Type.Data) {
 
 					// Makes data useable
-					string text = TransportHelper.ReceiveString(stream);
+					FixedString128Bytes str = stream.ReadFixedString128();
+					string text = str.ToString();
 
 					if (text == "receiver") {
 						Recvr = m_Connections[i];
@@ -93,28 +88,5 @@ public class Server : MonoBehaviour {
 				}
 			}
 		}
-
-		if (Recvr != default && Trnsmtr != default) {
-			TransportHelper.SendString(m_Driver, m_RelPL, Trnsmtr, "ready");
-		}
-	}
-
-	private List<string> ReceiveData() {
-		NetworkEvent.Type cmd;
-		List<string> trees = new List<string>();
-		while ((cmd = m_Driver.PopEventForConnection(Trnsmtr, out DataStreamReader stream, out m_FragPL)) != NetworkEvent.Type.Empty) {
-			if (cmd == NetworkEvent.Type.Data) {
-				trees.Add(TransportHelper.ReceiveString(stream));
-			} else if (cmd == NetworkEvent.Type.Disconnect) {
-				Debug.Log("Client disconnected from server");
-				Trnsmtr = default;
-			}
-		} 
-
-		return trees;
-	}
-
-	private void SendData(string newTree) {
-		TransportHelper.SendString(m_Driver, m_FragPL, Recvr, newTree);
 	}
 }
