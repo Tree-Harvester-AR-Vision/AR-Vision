@@ -11,10 +11,11 @@ namespace AprilTags
         {
             WebCamDevice[] devices = WebCamTexture.devices;
 
+            Debug.LogWarning($"Found {devices.Length} devices");
             // for debugging purposes, prints available devices to the console
             for (int i = 0; i < devices.Length; i++)
             {
-                Debug.Log("Webcam available: " + devices[i].name);
+                Debug.LogWarning("Webcam available: " + devices[i].name);
             }
 
             //Renderer rend = this.GetComponentInChildren<Renderer>();

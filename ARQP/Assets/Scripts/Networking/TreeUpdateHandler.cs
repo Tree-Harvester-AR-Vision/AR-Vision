@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using Meta.WitAi.Json;
 
 namespace Networking
 {
