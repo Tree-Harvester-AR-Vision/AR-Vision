@@ -1,35 +1,51 @@
-using System.Net.Sockets;
-using System.Text;
+using DataHandler;
 using Networking;
+using TMPro;
 using UnityEngine;
-using Unity.Collections;
-using Unity.Networking.Transport;
-using Unity.Networking.Transport.Utilities;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 using TcpClient = Networking.TcpClient;
 using UdpClient = Networking.UdpClient;
 
-public class Client : MonoBehaviour {
-	
+public class Client : MonoBehaviour
+{
     public string IP = "localhost";
     public ushort Port = 7000;
     public ConnectionType Type;
-    public GameObject Cube;
-    public BoundingBoxRenderer BBrenderer;
-    public double UdpTimeout = 1.0;
-
+    public DataType receiverType;
+    public TextMeshPro MessageBox;
     private IWebClient _client;
 
-    void Start() {
-        switch (Type)
+    void Start()
+    {
+        IDataReceiver receiver = null;
+        switch (receiverType)
         {
-            case ConnectionType.None:
+            case DataType.Tree:
+                receiver = GetComponent<TreeUpdateHandler>();
                 break;
-            case ConnectionType.TCP:
-                _client = new TcpClient(IP, Port, Cube, BBrenderer);
+            case DataType.Pose:
+                receiver = GetComponent<CalibrationHandler>();
                 break;
-            case ConnectionType.UDP:
-                _client = new UdpClient(IP, Port, Cube, BBrenderer, UdpTimeout);
-                break;
+        }
+
+        if (receiver != null)
+        {
+            switch (Type)
+            {
+                case ConnectionType.None:
+                    break;
+                case ConnectionType.TCP:
+                    _client = new TcpClient(IP, Port, MessageBox, receiver);
+                    break;
+                case ConnectionType.UDP:
+                    _client = new UdpClient(IP, Port, MessageBox, receiver);
+                    break;
+            }
+        }
+        else
+        {
+            Debug.LogError($"Could not find receiver of type {receiverType.ToString()} in the GameObject {name}");
         }
     }
 
@@ -42,6 +58,12 @@ public class Client : MonoBehaviour {
     {
         _client.Remove();
     }
+}
+
+public enum DataType
+{
+    Pose,
+    Tree
 }
 
 public enum ConnectionType
