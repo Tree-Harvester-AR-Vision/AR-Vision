@@ -16,7 +16,7 @@ namespace Networking
         static ClientWebSocket _socket;
 
         private int _connectionAttempt;
-        private readonly TextMeshPro _cube;
+        private readonly TextMeshPro _text;
         bool _specified;
         bool _receiving;
         public BoundingBoxRenderer BBrenderer;
@@ -28,7 +28,7 @@ namespace Networking
         {
             _socket = new ClientWebSocket();
             _specified = false;
-            _cube = gameObject;
+            _text = gameObject;
 
             _receiver = dataReceiver;
 
@@ -72,7 +72,7 @@ namespace Networking
                             string message = "Connection Complete!";
                             Debug.Log(message);
                             //Orange
-                            _cube.GetComponent<Renderer>().material.color = new Color(0, 0, 255);
+                            _text.GetComponent<Renderer>().material.color = new Color(0, 0, 255);
                         }
                         else if (_specified)
                         {
@@ -82,9 +82,9 @@ namespace Networking
                                 string newTree = await Receive();
                                 if (newTree.Substring(0, 1) == "L")
                                 {
-                                    _receiver.UpdateData(newTree.Substring(6));
+                                    _receiver.UpdateData(newTree.Substring(6), _text);
                                 }
-                                _cube.GetComponent<Renderer>().material.color = new Color(124, 252, 0);
+                                _text.GetComponent<Renderer>().material.color = new Color(124, 252, 0);
                             }
                         }
                     }
@@ -94,7 +94,7 @@ namespace Networking
                     //RED
                     _connectionAttempt++;
                     _specified = false;
-                    _cube.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+                    _text.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
                     Debug.Log($"#\t{ex.Message}");
                     Debug.Log($"#\tConnection failed ({_connectionAttempt})");
                 }

@@ -715,6 +715,7 @@ GameObject:
   - component: {fileID: 531050755}
   - component: {fileID: 531050758}
   - component: {fileID: 531050759}
+  - component: {fileID: 531050760}
   m_Layer: 0
   m_Name: WebClient
   m_TagString: Untagged
@@ -792,6 +793,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5153e7ac848e407fb07bc44ead07ef87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &531050760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531050754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcb3fdf52f3a95942912583ebd34e946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IP: 127.0.0.1
+  Port: 7001
+  Type: 2
+  receiverType: 0
+  MessageBox: {fileID: 1117758826}
 --- !u!1 &643341490
 GameObject:
   m_ObjectHideFlags: 0

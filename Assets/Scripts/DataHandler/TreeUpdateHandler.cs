@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
 
 namespace DataHandler
@@ -7,13 +8,15 @@ namespace DataHandler
     public class TreeUpdateHandler : MonoBehaviour, IDataReceiver
     {
         public BoundingBoxRenderer BBrenderer;
-        
-        private void UpdateTrees(string treeData)
+
+        public void UpdateData(string receivedData, TextMeshPro textMeshPro)
         {
-            List<InputTree>[] input = JsonConvert.DeserializeObject<List<InputTree>[]>(treeData);
+            List<InputTree>[] input = JsonConvert.DeserializeObject<List<InputTree>[]>(receivedData);
+
+            textMeshPro.text = $"Creates:\t{input[0].Count}\nUpdates:\t{input[1].Count}\nRemoves:\t{input[2].Count}";
             foreach (InputTree tree in input[0])
             {
-                BBrenderer.CreateTree(tree);
+                BBrenderer.CreateTree(tree); 
             }
 
             foreach (InputTree tree in input[1])
@@ -25,34 +28,6 @@ namespace DataHandler
             {
                 BBrenderer.RemoveTrees(tree);
             }
-        }
-
-        private void UpdateNewTrees(string tree)
-        {
-            //Debug.Log("Update: " + tree);
-
-            InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
-            BBrenderer.UpdateTree(inputTree);
-        }
-
-        private void GetNewTrees(string tree)
-        {
-            //Debug.Log("Create: " + tree);
-
-            InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
-            BBrenderer.CreateTree(inputTree);
-        }
-
-        private void RemoveTrees(string tree)
-        {
-            //Debug.Log("Remove: " + tree);
-            InputTree inputTree = JsonConvert.DeserializeObject<InputTree>(tree);
-            BBrenderer.RemoveTrees(inputTree);
-        }
-
-        public void UpdateData(string receivedData)
-        {
-            UpdateTrees(receivedData);
         }
     }
 

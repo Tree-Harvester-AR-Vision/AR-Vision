@@ -28,7 +28,14 @@ public class BoundingBoxRenderer : MonoBehaviour {
     }
 
     public void CreateTree(InputTree tree) {
-        treesToCreate.Add(tree.Key, tree);
+        if (renderedTrees.ContainsKey(tree.Key))
+        {
+            treesToUpdate.Add(tree.Key, tree);
+        }
+        else
+        {
+            treesToCreate.Add(tree.Key, tree);
+        }
     }
 
     public void RemoveTrees(InputTree tree) {
@@ -47,7 +54,8 @@ public class BoundingBoxRenderer : MonoBehaviour {
 
             // don't create something that already exists
             if (renderedTrees.ContainsKey(tree.Key) && renderedTrees[tree.Key] != null) {
-                treesToCreate.Clear();
+                treesToUpdate.Add(tree.Key, tree.Value);
+                treesToCreate.Remove(tree.Key);
                 return;
             }
 
@@ -72,7 +80,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
                 script.Center = tree.Value.boundingBox.Center;
             }
         }
-
+        treesToUpdate.Clear();
         treesToCreate.Clear();
     }
 }

@@ -48,8 +48,6 @@ namespace Networking
                     byte[] data = _client.Receive(ref anyIP);
                     
                     string text = Encoding.UTF8.GetString(data);
-                    
-                    Debug.Log(">> " + text);
                     lastReceivedUDPPacket=text;
                 }
                 catch (Exception err)
@@ -64,9 +62,7 @@ namespace Networking
         {
             if (!String.IsNullOrWhiteSpace(lastReceivedUDPPacket))
             {
-                _text.text = $"Package received {lastReceivedUDPPacket.Length}";
-                _receiver.UpdateData(lastReceivedUDPPacket);
-                _text.text = "Received Data";
+                _receiver.UpdateData(lastReceivedUDPPacket, _text);
             }
             else
             {
