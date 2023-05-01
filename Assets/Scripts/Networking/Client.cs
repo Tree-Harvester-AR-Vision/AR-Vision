@@ -27,6 +27,9 @@ public class Client : MonoBehaviour
             case DataType.Pose:
                 receiver = GetComponent<CalibrationHandler>();
                 break;
+            case DataType.LocalPose:
+                receiver = GetComponent<LocalCalibrationHandler>();
+                break;
         }
 
         if (receiver != null)
@@ -34,6 +37,7 @@ public class Client : MonoBehaviour
             switch (Type)
             {
                 case ConnectionType.None:
+                    _client = new LocalClient(MessageBox, receiver);
                     break;
                 case ConnectionType.TCP:
                     _client = new TcpClient(IP, Port, MessageBox, receiver);
@@ -63,7 +67,8 @@ public class Client : MonoBehaviour
 public enum DataType
 {
     Pose,
-    Tree
+    Tree,
+    LocalPose
 }
 
 public enum ConnectionType
