@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "1WMHHA62TA1517",
         "name": "com.XRLab.ARVision",
-        "processId": 5860,
+        "processId": 4710,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -48,6 +48,12 @@
             "deviceId": "1WMHHA62TA1517",
             "name": "com.XRLab.ARVision",
             "processId": 5860,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHHA62TA1517",
+            "name": "com.XRLab.ARVision",
+            "processId": 4710,
             "exited": false
         }
     ],
