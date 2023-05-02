@@ -9,6 +9,8 @@ public class BoundingBoxRenderer : MonoBehaviour {
     Dictionary<int, GameObject> renderedTrees;
 
     public GameObject boundingBox;
+    public Transform origin;
+    
 
     void Awake() {
         treesToUpdate = new Dictionary<int, InputTree>();
@@ -59,7 +61,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
             }
 
             GameObject newBox = Instantiate(boundingBox, Vector3.zero, Quaternion.identity);
-            newBox.GetComponent<PlaneToBox>().camPos = transform;
+            newBox.GetComponent<PlaneToBox>().origin = origin;
 
             if (!renderedTrees.ContainsKey(tree.Key)) {
                 renderedTrees.Add(tree.Key, newBox);

@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "1WMHHA62TA1517",
         "name": "com.XRLab.ARVision",
-        "processId": 1235,
+        "processId": 12817,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -108,6 +108,24 @@
             "deviceId": "1WMHHA62TA1517",
             "name": "com.XRLab.ARVision",
             "processId": 1235,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHHA62TA1517",
+            "name": "com.XRLab.ARVision",
+            "processId": 5090,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHHA62TA1517",
+            "name": "com.XRLab.ARVision",
+            "processId": 6189,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHHA62TA1517",
+            "name": "com.XRLab.ARVision",
+            "processId": 12817,
             "exited": false
         }
     ],

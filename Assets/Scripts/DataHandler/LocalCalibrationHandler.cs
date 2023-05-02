@@ -30,18 +30,14 @@ namespace DataHandler
             {
                 Calibrate();
             }
-            
-            textMeshPro.text = PositionToString();
+
+            textMeshPro.text = $"{PositionToString()}\n{RotationToString()}";
         }
 
         public void Calibrate()
         {
             Vector3 worldPosition = cameraTransform.position;
-            Debug.LogWarning(worldPosition.ToString());
             calibration = worldPosition - intendedCalibrationPosition;
-            Debug.LogWarning(calibration.ToString());
-            Vector3 newPosition = GetPosition();
-            Debug.LogWarning(newPosition.ToString());
             calibrated = true;
         }
 
@@ -53,6 +49,16 @@ namespace DataHandler
         private string PositionToString()
         {
             return GetPosition().ToString();
+        }
+
+        private Vector3 GetRotation()
+        {
+            return cameraTransform.rotation.eulerAngles;
+        }
+
+        private string RotationToString()
+        {
+            return GetRotation().ToString();
         }
     }
 }
