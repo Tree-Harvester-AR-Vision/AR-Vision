@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Microsoft.MixedReality.Toolkit.UX;
 using System.Globalization;
+using UnityEngine.InputSystem;
+
 
 namespace DataHandler
 {
@@ -25,6 +27,27 @@ namespace DataHandler
 
         public GameObject OverlayOrigin;
 
+        public GameObject CalibrationCanvas;
+        
+        private Controlls _playerActions;
+        private bool hidden = false;
+        
+        
+        private void Awake()
+        {
+            _playerActions = new Controlls();
+        }
+        
+        private void OnEnable()
+        {
+            _playerActions.Default.Enable();
+        }
+        
+        private void OnDisable()
+        {
+            _playerActions.Default.Disable();
+        }
+
         public void Start()
         {
             cameraTransform = MrktXrRig.transform;
@@ -43,6 +66,26 @@ namespace DataHandler
             }
 
             textMeshPro.text = $"{PositionToString()}\n{RotationToString()}";
+        }
+
+        public void Update()
+        {
+            if (_playerActions.Default.HideGUI.WasPressedThisFrame())
+            {
+                Debug.Log("GUI is visible now.");
+                CalibrationCanvas.SetActive(hidden);
+                OverlayOrigin.GetComponent<Renderer>().enabled = hidden;
+                hidden = toggleBoolean(hidden);
+            }
+        }
+
+        private bool toggleBoolean(bool value)
+        {
+            if (value)
+            {
+                return false;
+            }
+            return true;
         }
 
         public void Calibrate()
@@ -107,6 +150,8 @@ namespace DataHandler
 
                 OverlayOrigin.transform.position =
                     cameraTransform.position + new Vector3(xCalibration, yCalibration, zCalibration);
+                
+                OverlayOrigin.transform.rotation = Quaternion.Euler(rotXCalibration, rotYCalibration, rotZCalibration);
             }
             catch (Exception ex)
             {
