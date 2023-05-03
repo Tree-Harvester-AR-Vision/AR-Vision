@@ -61,6 +61,7 @@ public class BoundingBoxRenderer : MonoBehaviour {
             }
 
             GameObject newBox = Instantiate(boundingBox, Vector3.zero, Quaternion.identity);
+            newBox.transform.parent = origin;
             newBox.GetComponent<PlaneToBox>().origin = origin;
 
             if (!renderedTrees.ContainsKey(tree.Key)) {
