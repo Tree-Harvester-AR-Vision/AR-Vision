@@ -1,10 +1,9 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Microsoft.MixedReality.Toolkit.UX;
 using System.Globalization;
-using UnityEngine.InputSystem;
+using Microsoft.MixedReality.Toolkit.UX;
+using UnityEngine.UI;
 
 
 namespace DataHandler
@@ -17,17 +16,23 @@ namespace DataHandler
         private Vector3 calibration;
         private int frameCounter = 0;
 
-        public MRTKUGUIInputField transX;
-        public MRTKUGUIInputField transY;
-        public MRTKUGUIInputField transZ;
-        
-        public MRTKUGUIInputField rotX;
-        public MRTKUGUIInputField rotY;
-        public MRTKUGUIInputField rotZ;
+        public TextMeshProUGUI transX;
+        public TextMeshProUGUI transY;
+        public TextMeshProUGUI transZ;
+        public TextMeshProUGUI rotX;
+        public TextMeshProUGUI rotY;
+        public TextMeshProUGUI rotZ;
+
+        private Vector3 _transValue= new Vector3(0.0f, 0.0f, 0.0f);
+        private Vector3 _rotValue = new Vector3(0.0f, 0.0f, 0.0f);
+
 
         public GameObject OverlayOrigin;
-
         public GameObject CalibrationCanvas;
+
+        public Microsoft.MixedReality.Toolkit.UX.Slider sliderX;
+        public Microsoft.MixedReality.Toolkit.UX.Slider sliderY;
+        public Microsoft.MixedReality.Toolkit.UX.Slider sliderZ;
         
         private Controlls _playerActions;
         private bool hidden = false;
@@ -122,47 +127,89 @@ namespace DataHandler
             }
             return text;
         }
-        
-        //Used as EventH
-        public void UpdateCalibrationFromGui()
-        {
-            string xValue = getText(transX.text);
-            string yValue = getText(transY.text);
-            string zValue = getText(transZ.text);
-            
-            string rotXValue = getText(rotX.text);
-            string rotYValue = getText(rotY.text);
-            string rotZValue = getText(rotZ.text);
-            
-            
-
-            try
-            {
-                float xCalibration = float.Parse(xValue, CultureInfo.InvariantCulture);
-                float yCalibration = float.Parse(yValue, CultureInfo.InvariantCulture);
-                float zCalibration = float.Parse(zValue, CultureInfo.InvariantCulture);
-                float rotXCalibration = float.Parse(rotXValue, CultureInfo.InvariantCulture);
-                float rotYCalibration = float.Parse(rotYValue, CultureInfo.InvariantCulture);
-                float rotZCalibration = float.Parse(rotZValue, CultureInfo.InvariantCulture);
-
-                Debug.Log(
-                    $"New Calibration: {xCalibration}:{yCalibration}:{zCalibration} - {rotXCalibration}:{rotYCalibration}:{rotZCalibration}");
-
-                OverlayOrigin.transform.position =
-                    cameraTransform.position + new Vector3(xCalibration, yCalibration, zCalibration);
-                
-                OverlayOrigin.transform.rotation = Quaternion.Euler(rotXCalibration, rotYCalibration, rotZCalibration);
-            }
-            catch (Exception ex)
-            {
-                Debug.Log("Updating the calibration from user input unsuccessfull.");
-            }
-
-        }
 
         public void UpdateCalibrationFromClient()
         {
             throw new NotImplementedException();
+        }
+
+        public void UpdateCalibrationValueX(string value)
+        {
+            value = getText(value);
+            float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
+            
+            _transValue += new Vector3(calibrationValue, 0.0f, 0.0f);
+            UpdatePosition();
+            UpdateDisplay();
+        }
+        
+        public void UpdateCalibrationValueY(string value)
+        {
+            value = getText(value);
+            float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
+            
+            _transValue += new Vector3(0.0f, calibrationValue, 0.0f);
+            UpdatePosition();
+            UpdateDisplay();
+        }
+        
+        public void UpdateCalibrationValueZ(string value)
+        {
+            value = getText(value);
+            float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
+
+            _transValue += new Vector3(0.0f, 0.0f, calibrationValue);
+            UpdatePosition();
+            UpdateDisplay();
+
+        }
+
+        private void UpdatePosition()
+        {
+            OverlayOrigin.transform.position = cameraTransform.position + _transValue;
+            OverlayOrigin.transform.rotation = Quaternion.Euler(_rotValue);
+        }
+
+        public void UpdateCalibrationRotationX(SliderEventData data)
+        {
+            float x = data.NewValue*360;
+            _rotValue.x = x;
+            UpdatePosition();
+            UpdateDisplay();
+        }
+        public void UpdateCalibrationRotationY(SliderEventData data)
+        {
+            float y = data.NewValue*360;
+            _rotValue.y = y;
+            UpdatePosition();
+            UpdateDisplay();
+        }
+        
+        public void UpdateCalibrationRotationZ(SliderEventData data)
+        {
+            float z = data.NewValue*360;
+            _rotValue.z = z;
+            UpdatePosition();
+            UpdateDisplay();
+        }
+
+        private void UpdateDisplay()
+        {
+            if (transX && transY && transZ && rotZ && rotY && rotX)
+            {
+                transX.text = Math.Round(_transValue.x, 4).ToString(CultureInfo.InvariantCulture);
+                transY.text = Math.Round(_transValue.y, 4).ToString(CultureInfo.InvariantCulture);
+                transZ.text = Math.Round(_transValue.z, 4).ToString(CultureInfo.InvariantCulture);
+
+                rotX.text = Math.Round(_rotValue.x, 0).ToString(CultureInfo.InvariantCulture);
+                rotY.text = Math.Round(_rotValue.y, 0).ToString(CultureInfo.InvariantCulture);
+                rotZ.text = Math.Round(_rotValue.z, 0).ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                Debug.LogWarning($"One of the text-fields in {GetType()} is not specified");
+            }
+
         }
     }
 }

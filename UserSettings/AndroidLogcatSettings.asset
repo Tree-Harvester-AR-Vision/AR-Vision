@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "1WMHHA62TA1517",
+    "m_SelectedDeviceId": "230YC01DBB01PD",
     "m_SelectedPackage": {
-        "deviceId": "1WMHHA62TA1517",
+        "deviceId": "230YC01DBB01PD",
         "name": "com.XRLab.ARVision",
-        "processId": 5204,
+        "processId": 9522,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -36,6 +36,12 @@
             "deviceId": "230YC01DBB01PD",
             "name": "com.XRLab.ARVision",
             "processId": 6715,
+            "exited": false
+        },
+        {
+            "deviceId": "230YC01DBB01PD",
+            "name": "com.XRLab.ARVision",
+            "processId": 9522,
             "exited": false
         },
         {
@@ -138,6 +144,18 @@
             "deviceId": "1WMHHA62TA1517",
             "name": "com.XRLab.ARVision",
             "processId": 5204,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHHA62TA1517",
+            "name": "com.XRLab.ARVision",
+            "processId": 9523,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHHA62TA1517",
+            "name": "com.XRLab.ARVision",
+            "processId": 13752,
             "exited": false
         }
     ],
