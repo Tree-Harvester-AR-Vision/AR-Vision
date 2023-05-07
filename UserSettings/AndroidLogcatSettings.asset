@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "230YC01DBB01PD",
         "name": "com.XRLab.ARVision",
-        "processId": 9522,
+        "processId": 17388,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -42,6 +42,12 @@
             "deviceId": "230YC01DBB01PD",
             "name": "com.XRLab.ARVision",
             "processId": 9522,
+            "exited": false
+        },
+        {
+            "deviceId": "230YC01DBB01PD",
+            "name": "com.XRLab.ARVision",
+            "processId": 17388,
             "exited": false
         },
         {

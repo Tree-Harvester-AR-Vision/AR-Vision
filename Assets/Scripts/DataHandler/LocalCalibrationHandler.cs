@@ -79,7 +79,11 @@ namespace DataHandler
             {
                 Debug.Log("GUI is visible now.");
                 CalibrationCanvas.SetActive(hidden);
-                OverlayOrigin.GetComponent<Renderer>().enabled = hidden;
+                foreach (Renderer r in OverlayOrigin.GetComponentsInChildren<Renderer>())
+                    if (r)
+                    {
+                        r.enabled = hidden;
+                    }
                 hidden = toggleBoolean(hidden);
             }
         }
