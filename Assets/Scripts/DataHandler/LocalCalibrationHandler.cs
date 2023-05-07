@@ -58,7 +58,7 @@ namespace DataHandler
             cameraTransform = MrktXrRig.transform;
         }
 
-        public void UpdateData(string receivedData, TextMeshPro textMeshPro)
+        public void UpdateData(bool sim, string receivedData, TextMeshPro textMeshPro)
         {
             if (frameCounter < 100)
             {

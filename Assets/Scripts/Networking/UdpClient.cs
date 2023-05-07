@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using System.Net;
 using System.Threading;
+using DataHandler;
 using TMPro;
 
 namespace Networking
@@ -62,7 +63,19 @@ namespace Networking
         {
             if (!String.IsNullOrWhiteSpace(lastReceivedUDPPacket))
             {
-                _receiver.UpdateData(lastReceivedUDPPacket, _text);
+                string data = lastReceivedUDPPacket;
+                bool sim = false;
+                if (data.Substring(0, 1) == "1")
+                {
+                    sim = true;
+                    data = data.Substring(1);
+                }
+                else
+                {
+                    sim = false;
+                    data = data.Substring(1);
+                }
+                _receiver.UpdateData(sim, data, _text);
             }
             else
             {

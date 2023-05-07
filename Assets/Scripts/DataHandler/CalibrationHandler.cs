@@ -5,7 +5,7 @@ namespace DataHandler
 {
     public class CalibrationHandler : MonoBehaviour, IDataReceiver
     {
-        public void UpdateData(string receivedData, TextMeshPro textMeshPro)
+        public void UpdateData(bool sim, string receivedData, TextMeshPro textMeshPro)
         {
             textMeshPro.text = receivedData;
         }

@@ -9,11 +9,18 @@ namespace DataHandler
     {
         public BoundingBoxRenderer BBrenderer;
 
-        public void UpdateData(string receivedData, TextMeshPro textMeshPro)
+        public void UpdateData(bool sim, string receivedData, TextMeshPro textMeshPro)
         {
             List<InputTree>[] input = JsonConvert.DeserializeObject<List<InputTree>[]>(receivedData);
-
             textMeshPro.text = $"Creates:\t{input[0].Count}\nUpdates:\t{input[1].Count}\nRemoves:\t{input[2].Count}";
+
+            if (sim)
+            {
+                input = AdjustScreen(input);
+            }
+            
+            
+
             foreach (InputTree tree in input[0])
             {
                 BBrenderer.CreateTree(tree); 
@@ -28,6 +35,31 @@ namespace DataHandler
             {
                 BBrenderer.RemoveTrees(tree);
             }
+        }
+
+        private List<InputTree>[] AdjustScreen(List<InputTree>[] input)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                input[i] = AdjustScreen(input[i]);
+            }
+
+            return input;
+        }
+
+        private List<InputTree> AdjustScreen(List<InputTree> input)
+        {
+            List<InputTree> adjusted = new List<InputTree>();
+            foreach(InputTree tree in input)
+            {
+                //Adjust so that distance from camera is 1 meter: Divide everything by 1 meter
+                float zAdjust = tree.boundingBox.Center.z;
+                tree.boundingBox.Center /= zAdjust;
+                tree.boundingBox.Width /= zAdjust;
+                tree.boundingBox.Height /= zAdjust;
+                adjusted.Add(tree);
+            }
+            return adjusted;
         }
     }
 

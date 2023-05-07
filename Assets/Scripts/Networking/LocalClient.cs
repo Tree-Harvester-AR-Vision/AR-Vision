@@ -1,3 +1,4 @@
+using DataHandler;
 using TMPro;
 
 namespace Networking
@@ -16,7 +17,7 @@ namespace Networking
         
         public void Update()
         {
-            _receiver.UpdateData("", _text);
+            _receiver.UpdateData(false, "", _text);
         }
 
         public void Remove()
