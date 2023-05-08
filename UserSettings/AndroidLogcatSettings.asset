@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "230YC01DBB01PD",
         "name": "com.XRLab.ARVision",
-        "processId": 11157,
+        "processId": 7959,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -54,6 +54,30 @@
             "deviceId": "230YC01DBB01PD",
             "name": "com.XRLab.ARVision",
             "processId": 11157,
+            "exited": false
+        },
+        {
+            "deviceId": "230YC01DBB01PD",
+            "name": "com.XRLab.ARVision",
+            "processId": 9565,
+            "exited": false
+        },
+        {
+            "deviceId": "230YC01DBB01PD",
+            "name": "com.XRLab.ARVision",
+            "processId": 7244,
+            "exited": false
+        },
+        {
+            "deviceId": "230YC01DBB01PD",
+            "name": "com.XRLab.ARVision",
+            "processId": 4903,
+            "exited": false
+        },
+        {
+            "deviceId": "230YC01DBB01PD",
+            "name": "com.XRLab.ARVision",
+            "processId": 7959,
             "exited": false
         },
         {

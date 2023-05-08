@@ -1,5 +1,5 @@
 {
-    "name": "InputActions",
+    "name": "Controlls",
     "maps": [
         {
             "name": "Default",
@@ -9,6 +9,15 @@
                     "name": "HideGUI",
                     "type": "Button",
                     "id": "61af1495-ab43-43ed-9151-6938091ee903",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MarkWall",
+                    "type": "Button",
+                    "id": "cce38806-adf8-4e09-ae2f-01863096c1fe",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -35,6 +44,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "HideGUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53ef69e4-ec69-427c-8183-e76a8193bbf8",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MarkWall",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

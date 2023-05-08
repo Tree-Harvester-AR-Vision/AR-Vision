@@ -35,6 +35,15 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MarkWall"",
+                    ""type"": ""Button"",
+                    ""id"": ""cce38806-adf8-4e09-ae2f-01863096c1fe"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -59,6 +68,17 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""action"": ""HideGUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53ef69e4-ec69-427c-8183-e76a8193bbf8"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MarkWall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -80,6 +100,7 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
         // Default
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
         m_Default_HideGUI = m_Default.FindAction("HideGUI", throwIfNotFound: true);
+        m_Default_MarkWall = m_Default.FindAction("MarkWall", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -142,11 +163,13 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Default;
     private List<IDefaultActions> m_DefaultActionsCallbackInterfaces = new List<IDefaultActions>();
     private readonly InputAction m_Default_HideGUI;
+    private readonly InputAction m_Default_MarkWall;
     public struct DefaultActions
     {
         private @Controlls m_Wrapper;
         public DefaultActions(@Controlls wrapper) { m_Wrapper = wrapper; }
         public InputAction @HideGUI => m_Wrapper.m_Default_HideGUI;
+        public InputAction @MarkWall => m_Wrapper.m_Default_MarkWall;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -159,6 +182,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @HideGUI.started += instance.OnHideGUI;
             @HideGUI.performed += instance.OnHideGUI;
             @HideGUI.canceled += instance.OnHideGUI;
+            @MarkWall.started += instance.OnMarkWall;
+            @MarkWall.performed += instance.OnMarkWall;
+            @MarkWall.canceled += instance.OnMarkWall;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -166,6 +192,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @HideGUI.started -= instance.OnHideGUI;
             @HideGUI.performed -= instance.OnHideGUI;
             @HideGUI.canceled -= instance.OnHideGUI;
+            @MarkWall.started -= instance.OnMarkWall;
+            @MarkWall.performed -= instance.OnMarkWall;
+            @MarkWall.canceled -= instance.OnMarkWall;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -195,5 +224,6 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
     public interface IDefaultActions
     {
         void OnHideGUI(InputAction.CallbackContext context);
+        void OnMarkWall(InputAction.CallbackContext context);
     }
 }

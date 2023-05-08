@@ -3,18 +3,17 @@ using TMPro;
 using UnityEngine;
 using System.Globalization;
 using Microsoft.MixedReality.Toolkit.UX;
-using UnityEngine.UI;
 
 
 namespace DataHandler
 {
     public class LocalCalibrationHandler : MonoBehaviour, IDataReceiver
     {
-        public GameObject MrktXrRig;
-        private Transform cameraTransform;
-        private bool calibrated = false;
-        private Vector3 calibration;
-        private int frameCounter = 0;
+        public GameObject xrRig;
+        private Transform _cameraTransform;
+        private bool _calibrated = false;
+        private Vector3 _calibration;
+        private int _frameCounter = 0;
 
         public TextMeshProUGUI transX;
         public TextMeshProUGUI transY;
@@ -30,14 +29,16 @@ namespace DataHandler
         public GameObject OverlayOrigin;
         public GameObject CalibrationCanvas;
 
-        public Microsoft.MixedReality.Toolkit.UX.Slider sliderX;
-        public Microsoft.MixedReality.Toolkit.UX.Slider sliderY;
-        public Microsoft.MixedReality.Toolkit.UX.Slider sliderZ;
+        public Slider sliderX;
+        public Slider sliderY;
+        public Slider sliderZ;
         
         private Controlls _playerActions;
         private bool hidden = false;
-        
-        
+        private Vector3 initPosition;
+        private float _scaling;
+
+
         private void Awake()
         {
             _playerActions = new Controlls();
@@ -55,17 +56,18 @@ namespace DataHandler
 
         public void Start()
         {
-            cameraTransform = MrktXrRig.transform;
+            _cameraTransform = xrRig.transform;
+            initPosition = OverlayOrigin.transform.position;
         }
 
         public void UpdateData(bool sim, string receivedData, TextMeshPro textMeshPro)
         {
-            if (frameCounter < 100)
+            if (_frameCounter < 100)
             {
                 textMeshPro.text = "Not yet calibrated";
-                frameCounter++;
+                _frameCounter++;
             }
-            else if (!calibrated)
+            else if (!_calibrated)
             {
                 Calibrate();
             }
@@ -80,10 +82,13 @@ namespace DataHandler
                 Debug.Log("GUI is visible now.");
                 CalibrationCanvas.SetActive(hidden);
                 foreach (Renderer r in OverlayOrigin.GetComponentsInChildren<Renderer>())
+                {
                     if (r)
                     {
                         r.enabled = hidden;
                     }
+                }
+                    
                 hidden = toggleBoolean(hidden);
             }
         }
@@ -99,13 +104,13 @@ namespace DataHandler
 
         public void Calibrate()
         {
-            Vector3 worldPosition = cameraTransform.position;
-            calibrated = true;
+            Vector3 worldPosition = _cameraTransform.position;
+            _calibrated = true;
         }
 
         private Vector3 GetPosition()
         {
-            return cameraTransform.position - calibration;
+            return _cameraTransform.position - _calibration;
         }
 
         private string PositionToString()
@@ -115,7 +120,7 @@ namespace DataHandler
 
         private Vector3 GetRotation()
         {
-            return cameraTransform.rotation.eulerAngles;
+            return _cameraTransform.rotation.eulerAngles;
         }
 
         private string RotationToString()
@@ -170,8 +175,9 @@ namespace DataHandler
 
         private void UpdatePosition()
         {
-            OverlayOrigin.transform.position = cameraTransform.position + _transValue;
+            OverlayOrigin.transform.position = initPosition + _transValue;
             OverlayOrigin.transform.rotation = Quaternion.Euler(_rotValue);
+            OverlayOrigin.transform.localScale = new Vector3(_scaling, _scaling, _scaling);
         }
 
         public void UpdateCalibrationRotationX(SliderEventData data)
@@ -193,6 +199,14 @@ namespace DataHandler
         {
             float z = data.NewValue*360;
             _rotValue.z = z;
+            UpdatePosition();
+            UpdateDisplay();
+        }
+        
+        public void UpdateCalibrationScaling(SliderEventData data)
+        {
+            float z = data.NewValue;
+            _scaling = z;
             UpdatePosition();
             UpdateDisplay();
         }

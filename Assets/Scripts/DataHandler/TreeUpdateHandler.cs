@@ -14,27 +14,34 @@ namespace DataHandler
             List<InputTree>[] input = JsonConvert.DeserializeObject<List<InputTree>[]>(receivedData);
             textMeshPro.text = $"Creates:\t{input[0].Count}\nUpdates:\t{input[1].Count}\nRemoves:\t{input[2].Count}";
 
-            if (sim)
+            if (input.Length == 3)
             {
-                input = AdjustScreen(input);
+                if (sim)
+                {
+                    input = AdjustScreen(input);
+                }
+
+                foreach (InputTree tree in input[0])
+                {
+                    BBrenderer.CreateTree(tree); 
+                }
+
+                foreach (InputTree tree in input[1])
+                {
+                    BBrenderer.UpdateTree(tree);
+                }
+
+                foreach (InputTree tree in input[2])
+                {
+                    BBrenderer.RemoveTrees(tree);
+                }
             }
+            else
+            {
+                Debug.LogWarning("Received tree-data has an unexpected format");
+            }
+
             
-            
-
-            foreach (InputTree tree in input[0])
-            {
-                BBrenderer.CreateTree(tree); 
-            }
-
-            foreach (InputTree tree in input[1])
-            {
-                BBrenderer.UpdateTree(tree);
-            }
-
-            foreach (InputTree tree in input[2])
-            {
-                BBrenderer.RemoveTrees(tree);
-            }
         }
 
         private List<InputTree>[] AdjustScreen(List<InputTree>[] input)
@@ -57,6 +64,7 @@ namespace DataHandler
                 tree.boundingBox.Center /= zAdjust;
                 tree.boundingBox.Width /= zAdjust;
                 tree.boundingBox.Height /= zAdjust;
+                tree.boundingBox.Center.z -= 1;
                 adjusted.Add(tree);
             }
             return adjusted;
