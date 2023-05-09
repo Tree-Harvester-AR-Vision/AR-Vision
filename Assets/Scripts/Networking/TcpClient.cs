@@ -5,6 +5,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DataHandler;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -78,12 +79,21 @@ namespace Networking
                         {
                             if (!_receiving)
                             {
+                                bool sim = false;
                                 Debug.Log("Retrieving values");
                                 string newTree = await Receive();
-                                if (newTree.Substring(0, 1) == "L")
+
+                                if (newTree.Substring(0, 1) == "1")
                                 {
-                                    _receiver.UpdateData(newTree.Substring(6), _text);
+                                    sim = true;
+                                    newTree = newTree.Substring(1);
                                 }
+                                else
+                                {
+                                    sim = false;
+                                    newTree = newTree.Substring(1);
+                                }
+                                _receiver.UpdateData(sim, newTree, _text);
                                 _text.GetComponent<Renderer>().material.color = new Color(124, 252, 0);
                             }
                         }

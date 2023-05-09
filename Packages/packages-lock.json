@@ -212,7 +212,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.20",
+      "version": "3.0.21",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -376,7 +376,7 @@
     },
     "com.unity.xr.legacyinputhelpers": {
       "version": "2.1.10",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.vr": "1.0.0",
@@ -396,9 +396,18 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.xr.oculus": {
+      "version": "3.3.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.xr.management": "4.2.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.xr.openxr": {
       "version": "1.7.0",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.xr.management": "4.0.1",
