@@ -1,5 +1,5 @@
 {
-    "m_SelectedDeviceId": "1WMHHA634N2084",
+    "m_SelectedDeviceId": "230YC01DBB01PD",
     "m_SelectedPackage": {
         "deviceId": "",
         "name": "",
@@ -11,97 +11,37 @@
         {
             "deviceId": "230YC01DBB01PD",
             "name": "com.XRLab.ARVision",
-            "processId": 9565,
-            "exited": true
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
-            "processId": 7244,
-            "exited": true
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
-            "processId": 4903,
-            "exited": true
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
-            "processId": 7959,
-            "exited": true
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.oculus.os.vrusb",
-            "processId": 12684,
-            "exited": false
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.oculus.shellenv",
-            "processId": 3945,
-            "exited": false
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.oculus.xrstreamingclient",
-            "processId": 13624,
-            "exited": false
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
-            "processId": 10738,
-            "exited": false
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
-            "processId": 32512,
-            "exited": false
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
-            "processId": 4706,
-            "exited": false
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
-            "processId": 8070,
-            "exited": false
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
-            "processId": 12174,
-            "exited": false
-        },
-        {
-            "deviceId": "230YC01DBB01PD",
-            "name": "com.XRLab.ARVision",
             "processId": 14928,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "230YC01DBB01PD",
             "name": "com.XRLab.ARVision",
             "processId": 18790,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "230YC01DBB01PD",
             "name": "com.XRLab.ARVision",
             "processId": 21620,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "230YC01DBB01PD",
             "name": "com.XRLab.ARVision",
             "processId": 24342,
+            "exited": true
+        },
+        {
+            "deviceId": "230YC01DBB01PD",
+            "name": "com.oculus.shellenv",
+            "processId": 3862,
+            "exited": false
+        },
+        {
+            "deviceId": "230YC01DBB01PD",
+            "name": "com.oculus.xrstreamingclient",
+            "processId": 4839,
             "exited": false
         },
         {

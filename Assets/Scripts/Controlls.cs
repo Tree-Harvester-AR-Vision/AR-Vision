@@ -53,13 +53,22 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeleteWall"",
+                    ""type"": ""Button"",
+                    ""id"": ""3e57a0c3-75d6-4067-8357-0c35ea8d1991"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""04262671-4c70-4cac-993f-4fc8558eafd2"",
-                    ""path"": ""<OculusTouchController>/primaryButton"",
+                    ""path"": ""<OculusTouchController>{RightHand}/primaryButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -99,6 +108,17 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""action"": ""ApplyWall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""00ae820f-2840-432f-a0ab-073e3a8dab80"",
+                    ""path"": ""<OculusTouchController>{LeftHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeleteWall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +142,7 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
         m_Default_HideGUI = m_Default.FindAction("HideGUI", throwIfNotFound: true);
         m_Default_MarkWall = m_Default.FindAction("MarkWall", throwIfNotFound: true);
         m_Default_ApplyWall = m_Default.FindAction("ApplyWall", throwIfNotFound: true);
+        m_Default_DeleteWall = m_Default.FindAction("DeleteWall", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -186,6 +207,7 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_HideGUI;
     private readonly InputAction m_Default_MarkWall;
     private readonly InputAction m_Default_ApplyWall;
+    private readonly InputAction m_Default_DeleteWall;
     public struct DefaultActions
     {
         private @Controlls m_Wrapper;
@@ -193,6 +215,7 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
         public InputAction @HideGUI => m_Wrapper.m_Default_HideGUI;
         public InputAction @MarkWall => m_Wrapper.m_Default_MarkWall;
         public InputAction @ApplyWall => m_Wrapper.m_Default_ApplyWall;
+        public InputAction @DeleteWall => m_Wrapper.m_Default_DeleteWall;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -211,6 +234,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @ApplyWall.started += instance.OnApplyWall;
             @ApplyWall.performed += instance.OnApplyWall;
             @ApplyWall.canceled += instance.OnApplyWall;
+            @DeleteWall.started += instance.OnDeleteWall;
+            @DeleteWall.performed += instance.OnDeleteWall;
+            @DeleteWall.canceled += instance.OnDeleteWall;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -224,6 +250,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @ApplyWall.started -= instance.OnApplyWall;
             @ApplyWall.performed -= instance.OnApplyWall;
             @ApplyWall.canceled -= instance.OnApplyWall;
+            @DeleteWall.started -= instance.OnDeleteWall;
+            @DeleteWall.performed -= instance.OnDeleteWall;
+            @DeleteWall.canceled -= instance.OnDeleteWall;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -255,5 +284,6 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
         void OnHideGUI(InputAction.CallbackContext context);
         void OnMarkWall(InputAction.CallbackContext context);
         void OnApplyWall(InputAction.CallbackContext context);
+        void OnDeleteWall(InputAction.CallbackContext context);
     }
 }
