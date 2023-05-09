@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System.Globalization;
 using Microsoft.MixedReality.Toolkit.UX;
+using UnityEngine.Serialization;
 
 
 namespace DataHandler
@@ -29,14 +31,15 @@ namespace DataHandler
         public GameObject OverlayOrigin;
         public GameObject CalibrationCanvas;
 
-        public Slider sliderX;
-        public Slider sliderY;
-        public Slider sliderZ;
-        
         private Controlls _playerActions;
         private bool hidden = false;
         private Vector3 initPosition;
         private float _scaling;
+        private List<Vector3> _wallPositions;
+
+        public GameObject handController;
+
+        public GameObject originCross;
 
 
         private void Awake()
@@ -58,6 +61,8 @@ namespace DataHandler
         {
             _cameraTransform = xrRig.transform;
             initPosition = OverlayOrigin.transform.position;
+
+            _wallPositions = new List<Vector3>();
         }
 
         public void UpdateData(bool sim, string receivedData, TextMeshPro textMeshPro)
@@ -81,7 +86,7 @@ namespace DataHandler
             {
                 Debug.Log("GUI is visible now.");
                 CalibrationCanvas.SetActive(hidden);
-                foreach (Renderer r in OverlayOrigin.GetComponentsInChildren<Renderer>())
+                foreach (Renderer r in originCross.GetComponentsInChildren<Renderer>())
                 {
                     if (r)
                     {
@@ -91,6 +96,48 @@ namespace DataHandler
                     
                 hidden = toggleBoolean(hidden);
             }
+
+            if (_playerActions.Default.MarkWall.WasPressedThisFrame() && handController)
+            {
+                Vector3 pos = handController.transform.position;
+                _wallPositions.Add(pos);
+                
+            }
+
+            if (_playerActions.Default.ApplyWall.WasPressedThisFrame() && _wallPositions.Count == 4)
+            {
+                GetRotationFromPoints();
+            }
+        }
+
+        private void GetRotationFromPoints()
+        {
+            Vector3 a = _wallPositions[0];
+            Vector3 b = _wallPositions[1];
+            Vector3 c = _wallPositions[2];
+            Vector3 d = _wallPositions[3];
+            
+            Debug.Log(a);
+            Debug.Log(b);
+            Debug.Log(c);
+            Debug.Log(d);
+            
+            Vector3 x = c - a + d - b;
+            Vector3 y = c - d + a - b;
+            
+            var z = Vector3.Cross(x, y);
+            var planeOrientation = Quaternion.LookRotation(z, y);
+
+
+            Vector3 avg = a + b + c + d;
+            avg /= 4;
+            _rotValue = planeOrientation.eulerAngles;
+            _rotValue += new Vector3(0.0f, -180f, 90f);
+            _transValue = avg;
+
+            UpdatePosition();
+            UpdateDisplay();
+            _wallPositions = new List<Vector3>();
         }
 
         private bool toggleBoolean(bool value)
@@ -180,33 +227,40 @@ namespace DataHandler
             OverlayOrigin.transform.localScale = new Vector3(_scaling, _scaling, _scaling);
         }
 
-        public void UpdateCalibrationRotationX(SliderEventData data)
+        public void UpdateCalibrationRotationX(string value)
         {
-            float x = data.NewValue*360;
-            _rotValue.x = x;
+            value = getText(value);
+            float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
+
+            _rotValue += new Vector3(0.0f, 0.0f, calibrationValue);
             UpdatePosition();
             UpdateDisplay();
         }
-        public void UpdateCalibrationRotationY(SliderEventData data)
+        public void UpdateCalibrationRotationY(string value)
         {
-            float y = data.NewValue*360;
-            _rotValue.y = y;
-            UpdatePosition();
-            UpdateDisplay();
-        }
-        
-        public void UpdateCalibrationRotationZ(SliderEventData data)
-        {
-            float z = data.NewValue*360;
-            _rotValue.z = z;
+            value = getText(value);
+            float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
+
+            _rotValue += new Vector3(0.0f, 0.0f, calibrationValue);
             UpdatePosition();
             UpdateDisplay();
         }
         
-        public void UpdateCalibrationScaling(SliderEventData data)
+        public void UpdateCalibrationRotationZ(string value)
         {
-            float z = data.NewValue;
-            _scaling = z;
+            value = getText(value);
+            float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
+
+            _rotValue += new Vector3(0.0f, 0.0f, calibrationValue);
+            UpdatePosition();
+            UpdateDisplay();
+        }
+        
+        public void UpdateCalibrationScaling(string value)
+        {
+            value = getText(value);
+            float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
+            _scaling += calibrationValue;
             UpdatePosition();
             UpdateDisplay();
         }

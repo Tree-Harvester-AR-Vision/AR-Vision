@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ApplyWall",
+                    "type": "Button",
+                    "id": "03ebe26d-3974-41cd-be9d-2a09af7ed910",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -50,11 +59,22 @@
                 {
                     "name": "",
                     "id": "53ef69e4-ec69-427c-8183-e76a8193bbf8",
-                    "path": "",
+                    "path": "<OculusTouchController>{LeftHand}/triggerPressed",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "MarkWall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "919d6208-f912-4c36-a695-595ca85c4ae6",
+                    "path": "<OculusTouchController>{LeftHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ApplyWall",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

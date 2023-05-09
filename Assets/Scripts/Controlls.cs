@@ -44,6 +44,15 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ApplyWall"",
+                    ""type"": ""Button"",
+                    ""id"": ""03ebe26d-3974-41cd-be9d-2a09af7ed910"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -72,11 +81,22 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""53ef69e4-ec69-427c-8183-e76a8193bbf8"",
-                    ""path"": """",
+                    ""path"": ""<OculusTouchController>{LeftHand}/triggerPressed"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MarkWall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""919d6208-f912-4c36-a695-595ca85c4ae6"",
+                    ""path"": ""<OculusTouchController>{LeftHand}/gripPressed"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ApplyWall"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -101,6 +121,7 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
         m_Default_HideGUI = m_Default.FindAction("HideGUI", throwIfNotFound: true);
         m_Default_MarkWall = m_Default.FindAction("MarkWall", throwIfNotFound: true);
+        m_Default_ApplyWall = m_Default.FindAction("ApplyWall", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -164,12 +185,14 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
     private List<IDefaultActions> m_DefaultActionsCallbackInterfaces = new List<IDefaultActions>();
     private readonly InputAction m_Default_HideGUI;
     private readonly InputAction m_Default_MarkWall;
+    private readonly InputAction m_Default_ApplyWall;
     public struct DefaultActions
     {
         private @Controlls m_Wrapper;
         public DefaultActions(@Controlls wrapper) { m_Wrapper = wrapper; }
         public InputAction @HideGUI => m_Wrapper.m_Default_HideGUI;
         public InputAction @MarkWall => m_Wrapper.m_Default_MarkWall;
+        public InputAction @ApplyWall => m_Wrapper.m_Default_ApplyWall;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -185,6 +208,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @MarkWall.started += instance.OnMarkWall;
             @MarkWall.performed += instance.OnMarkWall;
             @MarkWall.canceled += instance.OnMarkWall;
+            @ApplyWall.started += instance.OnApplyWall;
+            @ApplyWall.performed += instance.OnApplyWall;
+            @ApplyWall.canceled += instance.OnApplyWall;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -195,6 +221,9 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
             @MarkWall.started -= instance.OnMarkWall;
             @MarkWall.performed -= instance.OnMarkWall;
             @MarkWall.canceled -= instance.OnMarkWall;
+            @ApplyWall.started -= instance.OnApplyWall;
+            @ApplyWall.performed -= instance.OnApplyWall;
+            @ApplyWall.canceled -= instance.OnApplyWall;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -225,5 +254,6 @@ public partial class @Controlls: IInputActionCollection2, IDisposable
     {
         void OnHideGUI(InputAction.CallbackContext context);
         void OnMarkWall(InputAction.CallbackContext context);
+        void OnApplyWall(InputAction.CallbackContext context);
     }
 }
