@@ -6453,8 +6453,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227117056}
   m_LocalRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_LocalPosition: {x: 0, y: 0, z: -20}
-  m_LocalScale: {x: 0.005, y: 20, z: 0.005}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalScale: {x: 0.005, y: 0.5, z: 0.005}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1769476055}
@@ -15429,7 +15429,6 @@ GameObject:
   - component: {fileID: 514683148}
   - component: {fileID: 514683147}
   - component: {fileID: 514683151}
-  - component: {fileID: 514683150}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -15516,234 +15515,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514683143}
   m_Mesh: {fileID: 4300000, guid: fbc47027e54e49848fdfd6d5e20510e7, type: 3}
---- !u!114 &514683150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 514683143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9ad66e7cc9a2754d8ea989740c9f00d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 2099332353}
-  m_Colliders: []
-  m_InteractionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_InteractionLayers:
-    m_Bits: 1
-  m_DistanceCalculationMode: 1
-  m_SelectMode: 1
-  m_CustomReticle: {fileID: 0}
-  m_AllowGazeInteraction: 0
-  m_AllowGazeSelect: 0
-  m_OverrideGazeTimeToSelect: 0
-  m_GazeTimeToSelect: 0.5
-  m_OverrideTimeToAutoDeselectGaze: 0
-  m_TimeToAutoDeselectGaze: 3
-  m_AllowGazeAssistance: 0
-  m_FirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FirstSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Activated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Deactivated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_StartingHoverFilters: []
-  m_StartingSelectFilters: []
-  m_StartingInteractionStrengthFilters: []
-  m_OnFirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnLastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectCanceled:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnActivate:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnDeactivate:
-    m_PersistentCalls:
-      m_Calls: []
-  isGazePinchSelected:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isRaySelected:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isPokeSelected:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isGrabSelected:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isGazeHovered:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isGazePinchHovered:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isRayHovered:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isGrabHovered:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isPokeHovered:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  isActiveHovered:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  disabledInteractorTypes:
-  - reference: Microsoft.MixedReality.Toolkit.IPokeInteractor, Microsoft.MixedReality.Toolkit.Core
-  <ToggleMode>k__BackingField: 0
-  <SelectThreshold>k__BackingField: 0.9
-  <DeselectThreshold>k__BackingField: 0.1
-  <TriggerOnRelease>k__BackingField: 1
-  <UseGazeDwell>k__BackingField: 0
-  <GazeDwellTime>k__BackingField: 1
-  <UseFarDwell>k__BackingField: 0
-  <FarDwellTime>k__BackingField: 1
-  allowSelectByVoice: 1
-  speechRecognitionKeyword: select
-  <VoiceRequiresFocus>k__BackingField: 1
-  <IsToggled>k__BackingField:
-    active: 0
-    onEntered:
-      m_PersistentCalls:
-        m_Calls: []
-    onExited:
-      m_PersistentCalls:
-        m_Calls: []
-  <OnClicked>k__BackingField:
-    m_PersistentCalls:
-      m_Calls: []
-  <OnEnabled>k__BackingField:
-    m_PersistentCalls:
-      m_Calls: []
-  <OnDisabled>k__BackingField:
-    m_PersistentCalls:
-      m_Calls: []
-  hostTransform: {fileID: 514683144}
-  allowedManipulations: 7
-  allowedInteractionTypes: -2147483641
-  applyTorque: 1
-  springForceSoftness: 0.1
-  springTorqueSoftness: 0.1
-  springDamping: 1
-  springForceLimit: 100
-  rotationAnchorNear: 1
-  rotationAnchorFar: 1
-  releaseBehavior: 3
-  transformSmoothingLogicType:
-    reference: Microsoft.MixedReality.Toolkit.SpatialManipulation.DefaultTransformSmoothingLogic,
-      Microsoft.MixedReality.Toolkit.SpatialManipulation
-  smoothingFar: 1
-  smoothingNear: 1
-  moveLerpTime: 0.001
-  rotateLerpTime: 0.001
-  scaleLerpTime: 0.001
-  enableConstraints: 1
-  constraintsManager: {fileID: 0}
-  manipulationLogicTypes:
-    moveLogicType:
-      reference: Microsoft.MixedReality.Toolkit.SpatialManipulation.MoveLogic, Microsoft.MixedReality.Toolkit.SpatialManipulation
-    rotateLogicType:
-      reference: Microsoft.MixedReality.Toolkit.SpatialManipulation.RotateLogic,
-        Microsoft.MixedReality.Toolkit.SpatialManipulation
-    scaleLogicType:
-      reference: Microsoft.MixedReality.Toolkit.SpatialManipulation.ScaleLogic, Microsoft.MixedReality.Toolkit.SpatialManipulation
 --- !u!114 &514683151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16718,7 +16489,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1. Move your Controller to the upper left corner, and press the trigger
+  m_text: 1. Move your Controller to the upper left corner of the Projection, and
+    press the left trigger
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -26491,8 +26263,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 787593144}
   m_LocalRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
-  m_LocalPosition: {x: 0, y: 0, z: 20}
-  m_LocalScale: {x: 0.025, y: 20, z: 0.025}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 0.025, y: 0.5, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1769476055}
@@ -32301,8 +32073,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 946448068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -20, z: 0}
-  m_LocalScale: {x: 0.005, y: 20, z: 0.005}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 0.005, y: 0.5, z: 0.005}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1769476055}
@@ -32472,7 +32244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &956699125
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42848,8 +42620,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1217990909}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 20, y: 0, z: 0}
-  m_LocalScale: {x: 0.025, y: 20, z: 0.025}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalScale: {x: 0.025, y: 0.5, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1769476055}
@@ -52962,7 +52734,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 5. Press the Grab-Button
+  m_text: 5. Press the Grab-Button on the Left-Controller. Use the scaling to adjust
+    the View.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -56198,8 +55971,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617913094}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -20, y: 0, z: 0}
-  m_LocalScale: {x: 0.005, y: 20, z: 0.005}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalScale: {x: 0.005, y: 0.5, z: 0.005}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1769476055}
@@ -65756,8 +65529,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893217428}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
-  m_LocalScale: {x: 0.025, y: 20, z: 0.025}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.025, y: 0.5, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1769476055}

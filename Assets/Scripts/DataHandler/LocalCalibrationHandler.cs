@@ -62,6 +62,8 @@ namespace DataHandler
             _cameraTransform = xrRig.transform;
             initPosition = OverlayOrigin.transform.position;
 
+            _scaling = 1.0f;
+
             wallPositions = new List<Vector3>();
         }
 
@@ -112,6 +114,7 @@ namespace DataHandler
             if (_playerActions.Default.DeleteWall.WasPressedThisFrame())
             {
                 wallPositions = new List<Vector3>();
+                
             }
         }
 
@@ -237,7 +240,7 @@ namespace DataHandler
             value = getText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
-            _rotValue += new Vector3(0.0f, 0.0f, calibrationValue);
+            _rotValue += new Vector3(calibrationValue,0.0f, 0.0f );
             UpdatePosition();
             UpdateDisplay();
         }
@@ -246,7 +249,7 @@ namespace DataHandler
             value = getText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
-            _rotValue += new Vector3(0.0f, 0.0f, calibrationValue);
+            _rotValue += new Vector3(0.0f, calibrationValue, 0.0f);
             UpdatePosition();
             UpdateDisplay();
         }

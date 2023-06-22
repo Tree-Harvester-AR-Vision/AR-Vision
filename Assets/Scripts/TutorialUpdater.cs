@@ -36,6 +36,7 @@ public class TutorialUpdater : MonoBehaviour
         if (numPoints < TutorialSteps.Count)
         {
             SetIndexActive(numPoints);
+            ErrorScreen.SetActive(false);
         }
         else
         {
