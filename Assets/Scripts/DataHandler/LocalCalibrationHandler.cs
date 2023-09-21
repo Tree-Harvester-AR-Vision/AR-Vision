@@ -35,7 +35,7 @@ namespace DataHandler
         private bool hidden = false;
         private Vector3 initPosition;
         private float _scaling;
-        private List<Vector3> _wallPositions;
+        public List<Vector3> wallPositions;
 
         public GameObject handController;
 
@@ -62,7 +62,9 @@ namespace DataHandler
             _cameraTransform = xrRig.transform;
             initPosition = OverlayOrigin.transform.position;
 
-            _wallPositions = new List<Vector3>();
+            _scaling = 1.0f;
+
+            wallPositions = new List<Vector3>();
         }
 
         public void UpdateData(bool sim, string receivedData, TextMeshPro textMeshPro)
@@ -100,22 +102,28 @@ namespace DataHandler
             if (_playerActions.Default.MarkWall.WasPressedThisFrame() && handController)
             {
                 Vector3 pos = handController.transform.position;
-                _wallPositions.Add(pos);
+                wallPositions.Add(pos);
                 
             }
 
-            if (_playerActions.Default.ApplyWall.WasPressedThisFrame() && _wallPositions.Count == 4)
+            if (_playerActions.Default.ApplyWall.WasPressedThisFrame() && wallPositions.Count == 4)
             {
                 GetRotationFromPoints();
+            }
+            
+            if (_playerActions.Default.DeleteWall.WasPressedThisFrame())
+            {
+                wallPositions = new List<Vector3>();
+                
             }
         }
 
         private void GetRotationFromPoints()
         {
-            Vector3 a = _wallPositions[0];
-            Vector3 b = _wallPositions[1];
-            Vector3 c = _wallPositions[2];
-            Vector3 d = _wallPositions[3];
+            Vector3 a = wallPositions[0];
+            Vector3 b = wallPositions[1];
+            Vector3 c = wallPositions[2];
+            Vector3 d = wallPositions[3];
             
             Debug.Log(a);
             Debug.Log(b);
@@ -137,7 +145,7 @@ namespace DataHandler
 
             UpdatePosition();
             UpdateDisplay();
-            _wallPositions = new List<Vector3>();
+            wallPositions = new List<Vector3>();
         }
 
         private bool toggleBoolean(bool value)
@@ -232,7 +240,7 @@ namespace DataHandler
             value = getText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
-            _rotValue += new Vector3(0.0f, 0.0f, calibrationValue);
+            _rotValue += new Vector3(calibrationValue,0.0f, 0.0f );
             UpdatePosition();
             UpdateDisplay();
         }
@@ -241,7 +249,7 @@ namespace DataHandler
             value = getText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
-            _rotValue += new Vector3(0.0f, 0.0f, calibrationValue);
+            _rotValue += new Vector3(0.0f, calibrationValue, 0.0f);
             UpdatePosition();
             UpdateDisplay();
         }

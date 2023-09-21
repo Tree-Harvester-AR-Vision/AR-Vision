@@ -31,13 +31,22 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DeleteWall",
+                    "type": "Button",
+                    "id": "3e57a0c3-75d6-4067-8357-0c35ea8d1991",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "04262671-4c70-4cac-993f-4fc8558eafd2",
-                    "path": "<OculusTouchController>/primaryButton",
+                    "path": "<OculusTouchController>{RightHand}/primaryButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -75,6 +84,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ApplyWall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "00ae820f-2840-432f-a0ab-073e3a8dab80",
+                    "path": "<OculusTouchController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteWall",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
