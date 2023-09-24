@@ -7,39 +7,56 @@ namespace DataHandler.Calibration
     public class RemoteCalibrationReceiver : CalibrationReceiver, IDataReceiver
     {
         public bool single;
-        
+
+        /// <summary>
+        /// The function updates data by calibrating the position of a helmet-mounted display based on received
+        /// information.
+        /// 
+        /// We receive the following information from the external provider: The position of the helmet-mounted display in relation to the camera.
+        /// Thus, we need to set the origin-marker for the visualization to the current camera position + whatever value we receive.
+        /// After that, we rotate it around.
+        /// If the single-flag is set, it is only updated once. Otherwise, it is updated whenever new data is received.
+        /// </summary>
+        /// <param name="simulation">IGNORED</param>
+        /// <param name="receivedData">A string containing the received data from an external provider. This
+        /// data is in JSON format and represents the position of a helmet-mounted display in relation to the
+        /// camera.</param>
+        /// <param name="TextMeshPro">TextMeshPro is a Unity component used for displaying text in a 3D
+        /// environment. It is often used for UI elements such as labels, buttons, and text fields. In this
+        /// case, the "textField" parameter is a reference to a TextMeshPro component that will be updated with
+        /// the new data.</param>
         public void UpdateData(bool simulation, string receivedData, TextMeshPro textField)
         {
-            // We receive the following information from the external provider: The position of the helmet-mounted display in relation to the camera.\
-            // Thus, we need to set the origin-marker for the visualization to the current camera position + whatever value we receive.
-            // After that, we rotate it around
-            
-            
-            // simulation-flag is ignored.
-            Networking.Responses.Calibration input = JsonConvert.DeserializeObject<Networking.Responses.Calibration>(receivedData);
+            Networking.Responses.Calibration input =
+                JsonConvert.DeserializeObject<Networking.Responses.Calibration>(receivedData);
 
             if (single && !_calibrated)
             {
                 CalibratePosition(input);
+                _calibrated = true;
             }
             else
             {
                 CalibratePosition(input);
             }
-            
         }
 
+        /// <summary>
+        /// The CalibratePosition function takes a Calibration input and updates the position and rotation of
+        /// the OverlayOrigin object based on the input values.
+        /// </summary>
+        /// <param name="input">The input parameter is of type Networking.Responses.Calibration, which is an
+        /// object that contains information about the calibration data.</param>
         private void CalibratePosition(Networking.Responses.Calibration input)
         {
             Vector3 transformation = new Vector3(input.Location.X, input.Location.Y, input.Location.Z);
             Vector3 rotation = new Vector3(input.Rotation.X, input.Rotation.Y, input.Rotation.Z);
-            
+
             if (Camera.main)
             {
                 OverlayOrigin.transform.position = Camera.main.transform.position + transformation;
                 OverlayOrigin.transform.rotation = Quaternion.Euler(rotation);
             }
-
         }
     }
 }
