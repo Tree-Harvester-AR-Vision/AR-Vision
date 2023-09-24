@@ -67,3 +67,5 @@ test_BurstDebugInformation_DoNotShip/
 test2_BurstDebugInformation_DoNotShip/
 UserSettings/AndroidLogcatSettings.asset
 UserSettings/Layouts/default-2021.dwlt
+
+.vscode

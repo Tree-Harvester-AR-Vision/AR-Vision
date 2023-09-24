@@ -24,7 +24,14 @@ namespace Networking
         private readonly bool _connected;
         private readonly IDataReceiver _receiver;
 
-        public TcpClient(string ip, ushort port, TextMeshPro gameObject, 
+        /// <summary>
+        /// The `TcpClient` constructor is initializing a new instance of the `TcpClient` class.
+        /// </summary>
+        /// <param name="ip">The IP address to connect to</param>
+        /// <param name="port">The port number to connect to</param>
+        /// <param name="gameObject">A reference to a TextMeshPro object</param>
+        /// <param name="dataReceiver">An object that implements the `IDataReceiver` interface</param>
+        public TcpClient(string ip, ushort port, TextMeshPro gameObject,
             IDataReceiver dataReceiver)
         {
             _socket = new ClientWebSocket();
@@ -33,8 +40,6 @@ namespace Networking
 
             _receiver = dataReceiver;
 
-            // to connect, make sure to use computer's current IP address, otherwise hololens build
-            // will not connect
             try
             {
                 Task connected = _socket.ConnectAsync(new Uri($"ws://{ip}:{port}"), CancellationToken.None);
@@ -48,13 +53,12 @@ namespace Networking
             }
         }
 
-        private void Start()
-        {
-        }
-
+        /// <summary>
+        /// The Update function is responsible for handling the connection to a socket, sending and receiving
+        /// data, and updating the color of a text object based on the connection status.
+        /// </summary>
         public async void Update()
         {
-            //cube.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
             if (_socket != null)
             {
                 try
@@ -67,7 +71,8 @@ namespace Networking
                     {
                         if (!_specified)
                         {
-                            await _socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes("R")), WebSocketMessageType.Text, true,
+                            await _socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes("R")),
+                                WebSocketMessageType.Text, true,
                                 CancellationToken.None);
                             _specified = true;
                             string message = "Connection Complete!";
@@ -93,6 +98,7 @@ namespace Networking
                                     sim = false;
                                     newTree = newTree.Substring(1);
                                 }
+
                                 _receiver.UpdateData(sim, newTree, _text);
                                 _text.GetComponent<Renderer>().material.color = new Color(124, 252, 0);
                             }
@@ -111,12 +117,20 @@ namespace Networking
             }
         }
 
+        /// <summary>
+        /// The Remove function is a placeholder with no code inside.
+        /// </summary>
         public void Remove()
         {
-            
         }
 
 
+        /// <summary>
+        /// The function receives data from a WebSocket connection and returns it as a string.
+        /// </summary>
+        /// <returns>
+        /// The method is returning a Task<string> and needs to be awaited
+        /// </returns>
         private async Task<string> Receive()
         {
             ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[2048]);

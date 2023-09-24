@@ -9,8 +9,11 @@ public class TutorialUpdater : MonoBehaviour
     public List<GameObject> TutorialSteps;
     public GameObject ErrorScreen;
     public LocalCalibrationHandler CalibrationHandler;
-    
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// The Start function checks for the presence of required components and throws exceptions if they are
+    /// missing.
+    /// </summary>
     void Start()
     {
         if (TutorialSteps == null || TutorialSteps.Count == 0)
@@ -29,7 +32,10 @@ public class TutorialUpdater : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// This function checks the number of wall positions and updates the active index and error screen
+    /// accordingly.
+    /// </summary>
     void Update()
     {
         int numPoints = CalibrationHandler.wallPositions.Count;
@@ -43,12 +49,16 @@ public class TutorialUpdater : MonoBehaviour
             SetIndexActive(-1);
             ErrorScreen.SetActive(true);
         }
-
     }
 
+    /// <summary>
+    /// The function sets the active state of tutorial steps based on the given number of points.
+    /// </summary>
+    /// <param name="numPoints">The `numPoints` parameter is an integer that represents the index of the
+    /// tutorial step that should be set as active.</param>
     private void SetIndexActive(int numPoints)
     {
-        for(int i = 0; i < TutorialSteps.Count; i++)
+        for (int i = 0; i < TutorialSteps.Count; i++)
         {
             TutorialSteps[i].SetActive(false);
         }
