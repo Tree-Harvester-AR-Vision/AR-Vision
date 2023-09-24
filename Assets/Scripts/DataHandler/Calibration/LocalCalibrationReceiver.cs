@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -11,11 +9,10 @@ namespace DataHandler.Calibration
         public GameObject xrRig;
         private Transform _cameraTransform;
         private Vector3 _calibration;
-        private int _frameCounter = 0;
+        private int _frameCounter;
         private Controlls _playerActions;
-        private bool hidden = false;
-        private Vector3 initPosition;
-        private float _scaling;
+        private bool _hidden;
+        //private Vector3 _initPosition;
         public List<Vector3> wallPositions;
 
         public GameObject handController;
@@ -52,9 +49,7 @@ namespace DataHandler.Calibration
         public void Start()
         {
             _cameraTransform = xrRig.transform;
-            initPosition = OverlayOrigin.transform.position;
-
-            _scaling = 1.0f;
+            //_initPosition = overlayOrigin.transform.position;
 
             wallPositions = new List<Vector3>();
         }
@@ -65,7 +60,7 @@ namespace DataHandler.Calibration
         /// </summary>
         /// <param name="sim">Ignored</param>
         /// <param name="receivedData">Ignored</param>
-        /// <param name="TextMeshPro">A textfield</param>
+        /// <param name="textField">A textfield</param>
         public void UpdateData(bool sim, string receivedData, TextMeshPro textField)
         {
             if (_frameCounter < 100)
@@ -73,7 +68,7 @@ namespace DataHandler.Calibration
                 textField.text = "Not yet calibrated";
                 _frameCounter++;
             }
-            else if (!_calibrated)
+            else if (!Calibrated)
             {
                 Calibrate();
             }
@@ -95,11 +90,11 @@ namespace DataHandler.Calibration
                 {
                     if (r)
                     {
-                        r.enabled = hidden;
+                        r.enabled = _hidden;
                     }
                 }
 
-                hidden = !hidden;
+                _hidden = !_hidden;
             }
 
             if (_playerActions.Default.MarkWall.WasPressedThisFrame() && handController)
@@ -152,7 +147,7 @@ namespace DataHandler.Calibration
         /// </summary>
         public void Calibrate()
         {
-            _calibrated = true;
+            Calibrated = true;
         }
 
         /// <summary>

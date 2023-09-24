@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Interface;
 using Networking.Responses;
 using Newtonsoft.Json;
 using TMPro;
@@ -11,7 +12,7 @@ namespace DataHandler.Tree
     /// </summary>
     public class TreeUpdateReceiver : MonoBehaviour, IDataReceiver
     {
-        public BoundingBoxRenderer BBrenderer;
+        public BoundingBoxRenderer boundingBoxRenderer;
 
         /// <summary>
         /// The function `UpdateData` updates the data based on the received input, adjusts the screen
@@ -43,17 +44,17 @@ namespace DataHandler.Tree
 
                 foreach (InputTree tree in input[0])
                 {
-                    BBrenderer.CreateTree(tree);
+                    boundingBoxRenderer.CreateTree(tree);
                 }
 
                 foreach (InputTree tree in input[1])
                 {
-                    BBrenderer.UpdateTree(tree);
+                    boundingBoxRenderer.UpdateTree(tree);
                 }
 
                 foreach (InputTree tree in input[2])
                 {
-                    BBrenderer.RemoveTrees(tree);
+                    boundingBoxRenderer.RemoveTrees(tree);
                 }
             }
             else

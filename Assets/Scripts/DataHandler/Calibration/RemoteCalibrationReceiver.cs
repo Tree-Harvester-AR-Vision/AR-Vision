@@ -21,19 +21,16 @@ namespace DataHandler.Calibration
         /// <param name="receivedData">A string containing the received data from an external provider. This
         /// data is in JSON format and represents the position of a helmet-mounted display in relation to the
         /// camera.</param>
-        /// <param name="TextMeshPro">TextMeshPro is a Unity component used for displaying text in a 3D
-        /// environment. It is often used for UI elements such as labels, buttons, and text fields. In this
-        /// case, the "textField" parameter is a reference to a TextMeshPro component that will be updated with
-        /// the new data.</param>
+        /// <param name="textField">The "textField" parameter is a reference to a TextMeshPro component that will be updated with the new data.</param>
         public void UpdateData(bool simulation, string receivedData, TextMeshPro textField)
         {
             Networking.Responses.Calibration input =
                 JsonConvert.DeserializeObject<Networking.Responses.Calibration>(receivedData);
 
-            if (single && !_calibrated)
+            if (single && !Calibrated)
             {
                 CalibratePosition(input);
-                _calibrated = true;
+                Calibrated = true;
             }
             else
             {
@@ -49,13 +46,13 @@ namespace DataHandler.Calibration
         /// object that contains information about the calibration data.</param>
         private void CalibratePosition(Networking.Responses.Calibration input)
         {
-            Vector3 transformation = new Vector3(input.Location.X, input.Location.Y, input.Location.Z);
-            Vector3 rotation = new Vector3(input.Rotation.X, input.Rotation.Y, input.Rotation.Z);
+            Vector3 newTransformation = new Vector3(input.Location.X, input.Location.Y, input.Location.Z);
+            Vector3 newRotation = new Vector3(input.Rotation.X, input.Rotation.Y, input.Rotation.Z);
 
             if (Camera.main)
             {
-                OverlayOrigin.transform.position = Camera.main.transform.position + transformation;
-                OverlayOrigin.transform.rotation = Quaternion.Euler(rotation);
+                overlayOrigin.transform.position = Camera.main.transform.position + newTransformation;
+                overlayOrigin.transform.rotation = Quaternion.Euler(newRotation);
             }
         }
     }

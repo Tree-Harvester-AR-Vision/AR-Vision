@@ -2,6 +2,7 @@
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace DataHandler.Calibration
 {
@@ -14,10 +15,10 @@ namespace DataHandler.Calibration
         public TextMeshProUGUI rotY;
         public TextMeshProUGUI rotZ;
 
-        public GameObject CalibrationCanvas;
-        public GameObject OverlayOrigin;
+        [FormerlySerializedAs("CalibrationCanvas")] public GameObject calibrationCanvas;
+        [FormerlySerializedAs("OverlayOrigin")] public GameObject overlayOrigin;
 
-        protected bool _calibrated = false;
+        protected bool Calibrated = false;
 
         public GameObject originCross;
 
@@ -53,7 +54,7 @@ namespace DataHandler.Calibration
         /// </summary>
         protected void ToggleVisibility()
         {
-            CalibrationCanvas.SetActive(!CalibrationCanvas.activeSelf);
+            calibrationCanvas.SetActive(!calibrationCanvas.activeSelf);
         }
 
         /// <summary>
@@ -61,10 +62,10 @@ namespace DataHandler.Calibration
         /// </summary>
         protected void UpdatePosition()
         {
-            OverlayOrigin.transform.position += transformation;
-            Vector3 appliedRotation = OverlayOrigin.transform.rotation.eulerAngles + rotation;
-            OverlayOrigin.transform.rotation = Quaternion.Euler(appliedRotation);
-            OverlayOrigin.transform.localScale += scaling;
+            overlayOrigin.transform.position += transformation;
+            Vector3 appliedRotation = overlayOrigin.transform.rotation.eulerAngles + rotation;
+            overlayOrigin.transform.rotation = Quaternion.Euler(appliedRotation);
+            overlayOrigin.transform.localScale += scaling;
         }
 
         #region Transformation
@@ -76,7 +77,7 @@ namespace DataHandler.Calibration
         /// X-axis.</param>
         public void UpdateCalibrationValueX(string value)
         {
-            value = getText(value);
+            value = GetText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
             transformation = new Vector3(calibrationValue, 0.0f, 0.0f);
@@ -91,7 +92,7 @@ namespace DataHandler.Calibration
         /// Y-axis.</param>
         public void UpdateCalibrationValueY(string value)
         {
-            value = getText(value);
+            value = GetText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
             transformation = new Vector3(0.0f, calibrationValue, 0.0f);
@@ -106,7 +107,7 @@ namespace DataHandler.Calibration
         /// Z-axis.</param>
         public void UpdateCalibrationValueZ(string value)
         {
-            value = getText(value);
+            value = GetText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
             transformation = new Vector3(0.0f, 0.0f, calibrationValue);
@@ -125,7 +126,7 @@ namespace DataHandler.Calibration
         /// <param name="value">A string representing the calibration rotation value.</param>
         public void UpdateCalibrationRotationX(string value)
         {
-            value = getText(value);
+            value = GetText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
             rotation = new Vector3(calibrationValue, 0.0f, 0.0f);
@@ -140,7 +141,7 @@ namespace DataHandler.Calibration
         /// <param name="value">A string representing the calibration rotation value.</param>
         public void UpdateCalibrationRotationY(string value)
         {
-            value = getText(value);
+            value = GetText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
             rotation = new Vector3(0.0f, calibrationValue, 0.0f);
@@ -155,7 +156,7 @@ namespace DataHandler.Calibration
         /// <param name="value">A string representing the calibration rotation value.</param>
         public void UpdateCalibrationRotationZ(string value)
         {
-            value = getText(value);
+            value = GetText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
 
             rotation = new Vector3(0.0f, 0.0f, calibrationValue);
@@ -173,7 +174,7 @@ namespace DataHandler.Calibration
         /// value.</param>
         public void UpdateCalibrationScaling(string value)
         {
-            value = getText(value);
+            value = GetText(value);
             float calibrationValue = float.Parse(value!, CultureInfo.InvariantCulture);
             scaling = new Vector3(calibrationValue, calibrationValue, calibrationValue);
             UpdatePosition();
@@ -188,7 +189,7 @@ namespace DataHandler.Calibration
         /// If the input string "text" is null or empty, the method will return the string "0.0". Otherwise, it
         /// will return the input string "text".
         /// </returns>
-        private string getText(string text)
+        private static string GetText(string text)
         {
             if (String.IsNullOrEmpty(text))
             {
