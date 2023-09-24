@@ -1,4 +1,6 @@
 using DataHandler;
+using DataHandler.Calibration;
+using DataHandler.Tree;
 using TMPro;
 using UnityEngine;
 
@@ -25,13 +27,13 @@ namespace Networking
             switch (receiverType)
             {
                 case DataType.Tree:
-                    receiver = GetComponent<TreeUpdateHandler>();
+                    receiver = GetComponent<TreeUpdateReceiver>();
                     break;
                 case DataType.Pose:
-                    receiver = GetComponent<CalibrationHandler>();
+                    receiver = GetComponent<RemoteCalibrationReceiver>();
                     break;
                 case DataType.LocalPose:
-                    receiver = GetComponent<LocalCalibrationHandler>();
+                    receiver = GetComponent<LocalCalibrationReceiver>();
                     break;
             }
 

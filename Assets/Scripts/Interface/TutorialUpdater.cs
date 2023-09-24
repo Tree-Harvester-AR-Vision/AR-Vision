@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DataHandler;
+using DataHandler.Calibration;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TutorialUpdater : MonoBehaviour
 {
     public List<GameObject> TutorialSteps;
     public GameObject ErrorScreen;
-    public LocalCalibrationHandler CalibrationHandler;
+    [FormerlySerializedAs("CalibrationHandler")] public LocalCalibrationReceiver calibrationReceiver;
 
     /// <summary>
     /// The Start function checks for the presence of required components and throws exceptions if they are
@@ -26,7 +28,7 @@ public class TutorialUpdater : MonoBehaviour
             throw new Exception($"{GetType()} needs to have a Error-Screen");
         }
 
-        if (CalibrationHandler == null)
+        if (calibrationReceiver == null)
         {
             throw new Exception($"{GetType()} needs to have a reference to a LocalCalibrationHandler");
         }
@@ -38,7 +40,7 @@ public class TutorialUpdater : MonoBehaviour
     /// </summary>
     void Update()
     {
-        int numPoints = CalibrationHandler.wallPositions.Count;
+        int numPoints = calibrationReceiver.wallPositions.Count;
         if (numPoints < TutorialSteps.Count)
         {
             SetIndexActive(numPoints);
