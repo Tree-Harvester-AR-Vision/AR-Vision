@@ -1,79 +1,77 @@
 using DataHandler;
-using Networking;
+using DataHandler.Calibration;
+using DataHandler.Tree;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
-using TcpClient = Networking.TcpClient;
-using UdpClient = Networking.UdpClient;
 
-public class Client : MonoBehaviour
+namespace Networking
 {
-    public string IP = "localhost";
-    public ushort Port = 7000;
-    public ConnectionType Type;
-    public DataType receiverType;
-    public TextMeshPro MessageBox;
-    private IWebClient _client;
-
-    void Start()
+    /// <summary>
+    /// The Client class is responsible for setting up and managing a network client connection, based on the specified connection type and data receiver type.
+    /// </summary>
+    public class Client : MonoBehaviour
     {
-        IDataReceiver receiver = null;
-        switch (receiverType)
-        {
-            case DataType.Tree:
-                receiver = GetComponent<TreeUpdateHandler>();
-                break;
-            case DataType.Pose:
-                receiver = GetComponent<CalibrationHandler>();
-                break;
-            case DataType.LocalPose:
-                receiver = GetComponent<LocalCalibrationHandler>();
-                break;
-        }
+        public string ip = "localhost";
+        public ushort port = 7000;
+        public ConnectionType type;
+        public DataType receiverType;
+        public TextMeshPro messageBox;
+        private IWebClient _client;
 
-        if (receiver != null)
+        /// <summary>
+        /// The Start function assigns a data receiver based on the set receiver type and likewise assigns a client for the connection type
+        /// </summary>
+        void Start()
         {
-            switch (Type)
+            IDataReceiver receiver = null;
+            switch (receiverType)
             {
-                case ConnectionType.None:
-                    _client = new LocalClient(MessageBox, receiver);
+                case DataType.Tree:
+                    receiver = GetComponent<TreeUpdateReceiver>();
                     break;
-                case ConnectionType.TCP:
-                    _client = new TcpClient(IP, Port, MessageBox, receiver);
+                case DataType.Pose:
+                    receiver = GetComponent<RemoteCalibrationReceiver>();
                     break;
-                case ConnectionType.UDP:
-                    _client = new UdpClient(IP, Port, MessageBox, receiver);
+                case DataType.LocalPose:
+                    receiver = GetComponent<LocalCalibrationReceiver>();
                     break;
             }
+
+            if (receiver != null)
+            {
+                switch (type)
+                {
+                    case ConnectionType.None:
+                        _client = new LocalClient(messageBox, receiver);
+                        break;
+                    case ConnectionType.TCP:
+                        _client = new TcpClient(ip, port, messageBox, receiver);
+                        break;
+                    case ConnectionType.UDP:
+                        _client = new UdpClient(ip, port, messageBox, receiver);
+                        break;
+                }
+            }
+            else
+            {
+                Debug.LogError($"Could not find receiver of type {receiverType.ToString()} in the GameObject {name}");
+            }
         }
-        else
+
+        /// <summary>
+        /// The Update function calls the Update method of the _client object.
+        /// </summary>
+        void Update()
         {
-            Debug.LogError($"Could not find receiver of type {receiverType.ToString()} in the GameObject {name}");
+            _client.Update();
+        }
+
+        /// <summary>
+        /// The OnDestroy function removes the client.
+        /// </summary>
+        public void OnDestroy()
+        {
+            _client.Remove();
         }
     }
-
-    void Update()
-    {
-        _client.Update();
-    }
-
-    public void OnDestroy()
-    {
-        _client.Remove();
-    }
-}
-
-public enum DataType
-{
-    Pose,
-    Tree,
-    LocalPose
-}
-
-public enum ConnectionType
-{
-    None,
-    TCP,
-    UDP
 }
